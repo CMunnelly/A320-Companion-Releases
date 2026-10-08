@@ -1,10 +1,10 @@
 {
-  "version": "3.69",
-  "minimum_updater_version": "1.0",
-  "published_at": "2026-10-08",
+  "notes": "Installer auto-launch disabled to avoid Python DLL temporary extraction conflicts",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.70/A320_Flight_Companion_Setup_3_70.exe",
+  "release_tag": "v3.70",
+  "app": "A320 Flight Companion",
   "channel": "stable",
-  "release_tag": "v3.69",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.69/A320_Flight_Companion_Setup_3_69.exe",
-  "notes": "Updater process-exit delay and diagnostics test",
-  "app": "A320 Flight Companion"
+  "version": "3.70",
+  "published_at": "2026-10-08",
+  "minimum_updater_version": "1.0"
 }
