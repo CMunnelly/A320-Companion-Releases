@@ -1,10 +1,10 @@
 {
   "app": "A320 Flight Companion",
-  "version": "3.62",
+  "version": "3.63",
   "channel": "stable",
-  "release_tag": "v3.62",
-  "download_url": "https://raw.githubusercontent.com/CMunnelly/A320-Companion-Releases/main/A320_Flight_Companion_Setup_3_62.exe",
+  "release_tag": "v3.63",
+  "download_url": "https://raw.githubusercontent.com/CMunnelly/A320-Companion-Releases/main/A320_Flight_Companion_Setup_3_63.exe",
   "published_at": "2026-10-08",
-  "notes": "V3.62 bootstrap updater build. Connects Flight Companion to the public update channel.",
+  "notes": "V3.63 Views redesign: illustrated cockpit instrument tiles, aircraft external-view selector, confirmed external view shortcuts, semantic version comparison, and update-manifest cache busting.",
   "minimum_updater_version": "1.0"
 }
