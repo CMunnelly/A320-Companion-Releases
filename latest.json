@@ -1,10 +1,10 @@
 {
-  "minimum_updater_version": "1.0",
-  "published_at": "2026-10-08",
-  "app": "A320 Flight Companion",
-  "notes": "Updater process-exit delay and diagnostics test",
   "channel": "stable",
-  "version": "3.67",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.67/A320_Flight_Companion_Setup_3_67.exe",
-  "release_tag": "v3.67"
+  "published_at": "2026-10-08",
+  "version": "3.68",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.68/A320_Flight_Companion_Setup_3_68.exe",
+  "release_tag": "v3.68",
+  "minimum_updater_version": "1.0",
+  "app": "A320 Flight Companion",
+  "notes": "Updater process-exit delay and diagnostics test"
 }
