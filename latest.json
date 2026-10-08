@@ -1,10 +1,10 @@
 {
   "app": "A320 Flight Companion",
-  "version": "3.64",
+  "version": "3.65",
   "channel": "stable",
-  "release_tag": "v3.64",
-  "download_url": "https://raw.githubusercontent.com/CMunnelly/A320-Companion-Releases/main/A320_Flight_Companion_Setup_3_64.exe",
+  "release_tag": "v3.65",
+  "download_url": "https://raw.githubusercontent.com/CMunnelly/A320-Companion-Releases/main/A320_Flight_Companion_Setup_3_65.exe",
   "published_at": "2026-10-08",
-  "notes": "V3.64 test release: improved PC and iPad MSFS camera shortcuts using Windows SendInput scan codes, with foreground-focus validation. Live simulator verification pending.",
+  "notes": "V3.65 updater shutdown test: stage installer, close Flight Companion and wait for the application process to exit before installer starts. Camera controls from V3.64 preserved.",
   "minimum_updater_version": "1.0"
 }
