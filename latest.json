@@ -1,0 +1,10 @@
+{
+  "app": "A320 Flight Companion",
+  "version": "3.61",
+  "channel": "stable",
+  "release_tag": "v3.61",
+  "download_url": "https://raw.githubusercontent.com/CMunnelly/A320-Companion-Releases/main/A320_Flight_Companion_Setup_3_61.exe",
+  "published_at": "2026-10-08",
+  "notes": "V3.61 native-window build with checklist layout improvements and visible update-check feedback.",
+  "minimum_updater_version": "1.0"
+}
