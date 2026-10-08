@@ -1,10 +1,10 @@
 {
-  "minimum_updater_version": "1.0",
+  "release_tag": "v3.76",
+  "version": "3.76",
+  "notes": "Verified Shift+X external view, clearer connection status and faster update detection",
   "app": "A320 Flight Companion",
-  "release_tag": "v3.75",
-  "notes": "Photographic cockpit Views and route icon reset for new flights",
-  "version": "3.75",
-  "channel": "stable",
   "published_at": "2026-10-08",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.75/A320_Flight_Companion_Setup_3_75.exe"
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.76/A320_Flight_Companion_Setup_3_76.exe",
+  "minimum_updater_version": "1.0",
+  "channel": "stable"
 }
