@@ -1,10 +1,10 @@
 {
   "app": "A320 Flight Companion",
-  "version": "3.63",
+  "version": "3.64",
   "channel": "stable",
-  "release_tag": "v3.63",
-  "download_url": "https://raw.githubusercontent.com/CMunnelly/A320-Companion-Releases/main/A320_Flight_Companion_Setup_3_63.exe",
+  "release_tag": "v3.64",
+  "download_url": "https://raw.githubusercontent.com/CMunnelly/A320-Companion-Releases/main/A320_Flight_Companion_Setup_3_64.exe",
   "published_at": "2026-10-08",
-  "notes": "V3.63 Views redesign: illustrated cockpit instrument tiles, aircraft external-view selector, confirmed external view shortcuts, semantic version comparison, and update-manifest cache busting.",
+  "notes": "V3.64 test release: improved PC and iPad MSFS camera shortcuts using Windows SendInput scan codes, with foreground-focus validation. Live simulator verification pending.",
   "minimum_updater_version": "1.0"
 }
