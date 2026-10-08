@@ -1,10 +1,10 @@
 {
   "minimum_updater_version": "1.0",
-  "channel": "stable",
-  "release_tag": "v3.74",
-  "published_at": "2026-10-08",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.74/A320_Flight_Companion_Setup_3_74.exe",
-  "notes": "One-folder packaging and explicit updater process shutdown",
   "app": "A320 Flight Companion",
-  "version": "3.74"
+  "release_tag": "v3.75",
+  "notes": "Photographic cockpit Views and route icon reset for new flights",
+  "version": "3.75",
+  "channel": "stable",
+  "published_at": "2026-10-08",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.75/A320_Flight_Companion_Setup_3_75.exe"
 }
