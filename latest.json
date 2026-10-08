@@ -1,10 +1,10 @@
 {
-  "channel": "stable",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.71/A320_Flight_Companion_Setup_3_71.exe",
-  "release_tag": "v3.71",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.72/A320_Flight_Companion_Setup_3_72.exe",
+  "release_tag": "v3.72",
+  "version": "3.72",
+  "minimum_updater_version": "1.0",
   "notes": "Updater process exit wait and delayed post-install restart",
-  "published_at": "2026-10-08",
+  "channel": "stable",
   "app": "A320 Flight Companion",
-  "version": "3.71",
-  "minimum_updater_version": "1.0"
+  "published_at": "2026-10-08"
 }
