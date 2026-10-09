@@ -1,10 +1,10 @@
 {
-  "published_at": "2026-10-09",
-  "notes": "Default Cockpit is now on the cockpit image instead of a separate button",
-  "app": "A320 Flight Companion",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.78/A320_Flight_Companion_Setup_3_78.exe",
-  "release_tag": "v3.78",
-  "minimum_updater_version": "1.0",
+  "release_tag": "v3.79",
+  "version": "3.79",
   "channel": "stable",
-  "version": "3.78"
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.79/A320_Flight_Companion_Setup_3_79.exe",
+  "notes": "SkyNet activity at departure and arrival airports, plus nearby pilots within 50 NM",
+  "app": "A320 Flight Companion",
+  "minimum_updater_version": "1.0",
+  "published_at": "2026-10-09"
 }
