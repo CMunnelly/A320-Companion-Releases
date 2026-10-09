@@ -1,10 +1,10 @@
 {
-  "published_at": "2026-10-09",
-  "version": "3.80",
-  "release_tag": "v3.80",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.80/A320_Flight_Companion_Setup_3_80.exe",
-  "channel": "stable",
+  "release_tag": "v3.81",
   "app": "A320 Flight Companion",
-  "notes": "Correct live checklist phase and taxi-stop handling; preserve manual progress",
-  "minimum_updater_version": "1.0"
+  "notes": "Fix missing SimConnect DLL for live tracking and checklist phase",
+  "published_at": "2026-10-09",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.81/A320_Flight_Companion_Setup_3_81.exe",
+  "version": "3.81",
+  "minimum_updater_version": "1.0",
+  "channel": "stable"
 }
