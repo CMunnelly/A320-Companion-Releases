@@ -1,10 +1,10 @@
 {
-  "release_tag": "v3.76",
-  "version": "3.76",
-  "notes": "Verified Shift+X external view, clearer connection status and faster update detection",
+  "notes": "New single-image Flight Deck with labelled touch zones and cockpit/external controls",
+  "channel": "stable",
+  "published_at": "2026-10-09",
+  "release_tag": "v3.77",
   "app": "A320 Flight Companion",
-  "published_at": "2026-10-08",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.76/A320_Flight_Companion_Setup_3_76.exe",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.77/A320_Flight_Companion_Setup_3_77.exe",
   "minimum_updater_version": "1.0",
-  "channel": "stable"
+  "version": "3.77"
 }
