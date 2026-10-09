@@ -1,10 +1,10 @@
 {
-  "notes": "New single-image Flight Deck with labelled touch zones and cockpit/external controls",
-  "channel": "stable",
   "published_at": "2026-10-09",
-  "release_tag": "v3.77",
+  "notes": "Default Cockpit is now on the cockpit image instead of a separate button",
   "app": "A320 Flight Companion",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.77/A320_Flight_Companion_Setup_3_77.exe",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.78/A320_Flight_Companion_Setup_3_78.exe",
+  "release_tag": "v3.78",
   "minimum_updater_version": "1.0",
-  "version": "3.77"
+  "channel": "stable",
+  "version": "3.78"
 }
