@@ -1,10 +1,10 @@
 {
-  "release_tag": "v4.03",
-  "published_at": "2026-10-10",
-  "notes": "Unified cabin map and camera controls",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.03/A320_Flight_Companion_Setup_4_03.exe",
-  "minimum_updater_version": "1.0",
+  "notes": "Arrival satellite map and taxi-route display; GSX page removed",
+  "release_tag": "v4.04",
   "app": "A320 Flight Companion",
-  "channel": "stable",
-  "version": "4.03"
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.04/A320_Flight_Companion_Setup_4_04.exe",
+  "published_at": "2026-10-10",
+  "version": "4.04",
+  "minimum_updater_version": "1.0",
+  "channel": "stable"
 }
