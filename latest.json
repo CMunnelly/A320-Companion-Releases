@@ -1,10 +1,10 @@
 {
   "published_at": "2026-10-10",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.97/A320_Flight_Companion_Setup_3_97.exe",
+  "channel": "stable",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.98/A320_Flight_Companion_Setup_3_98.exe",
   "minimum_updater_version": "1.0",
-  "version": "3.97",
-  "app": "A320 Flight Companion",
-  "notes": "Simplified cabin save with automatic slot allocation",
-  "release_tag": "v3.97",
-  "channel": "stable"
+  "notes": "Simple cabin save with manual slot chooser",
+  "version": "3.98",
+  "release_tag": "v3.98",
+  "app": "A320 Flight Companion"
 }
