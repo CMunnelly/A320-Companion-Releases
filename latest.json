@@ -1,10 +1,10 @@
 {
-  "version": "3.89",
-  "release_tag": "v3.89",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.90/A320_Flight_Companion_Setup_3_90.exe",
+  "notes": "Cockpit and scrollable cabin views; iPad weather pinch zoom and drag",
+  "published_at": "2026-10-10",
   "app": "A320 Flight Companion",
-  "published_at": "2026-10-09",
+  "channel": "stable",
   "minimum_updater_version": "1.0",
-  "notes": "SimBrief step-climb cruise level and stale traffic cache fix",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.89/A320_Flight_Companion_Setup_3_89.exe",
-  "channel": "stable"
+  "release_tag": "v3.90",
+  "version": "3.90"
 }
