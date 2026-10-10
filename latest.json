@@ -1,10 +1,10 @@
 {
-  "notes": "Cabin camera saves use the working MSFS keyboard command to preserve orientation",
-  "published_at": "2026-10-10",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.01/A320_Flight_Companion_Setup_4_01.exe",
-  "version": "4.01",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.02/A320_Flight_Companion_Setup_4_02.exe",
   "app": "A320 Flight Companion",
-  "release_tag": "v4.01",
   "channel": "stable",
+  "release_tag": "v4.02",
+  "published_at": "2026-10-10",
+  "version": "4.02",
+  "notes": "Simplified cabin controls with tappable optional help tips",
   "minimum_updater_version": "1.0"
 }
