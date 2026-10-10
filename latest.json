@@ -1,10 +1,10 @@
 {
+  "version": "3.93",
   "minimum_updater_version": "1.0",
-  "release_tag": "v3.92",
-  "app": "A320 Flight Companion",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.92/A320_Flight_Companion_Setup_3_92.exe",
-  "notes": "Save current cabin camera and link its recall shortcut automatically",
   "published_at": "2026-10-10",
-  "version": "3.92",
-  "channel": "stable"
+  "release_tag": "v3.93",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.93/A320_Flight_Companion_Setup_3_93.exe",
+  "app": "A320 Flight Companion",
+  "channel": "stable",
+  "notes": "Personal integration settings and destination gate page"
 }
