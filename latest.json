@@ -1,10 +1,10 @@
 {
-  "version": "3.93",
-  "minimum_updater_version": "1.0",
   "published_at": "2026-10-10",
-  "release_tag": "v3.93",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.93/A320_Flight_Companion_Setup_3_93.exe",
+  "release_tag": "v3.94",
   "app": "A320 Flight Companion",
+  "version": "3.94",
+  "minimum_updater_version": "1.0",
   "channel": "stable",
-  "notes": "Personal integration settings and destination gate page"
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.94/A320_Flight_Companion_Setup_3_94.exe",
+  "notes": "Front and rear cabin aisle camera spots"
 }
