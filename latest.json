@@ -1,10 +1,10 @@
 {
-  "app": "A320 Flight Companion",
-  "release_tag": "v3.99",
-  "published_at": "2026-10-10",
-  "version": "3.99",
-  "notes": "Direct MSFS camera saving; no save shortcuts required",
+  "version": "4.00",
   "channel": "stable",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.00/A320_Flight_Companion_Setup_4_00.exe",
+  "notes": "One-click Alt number camera setup with preserved seat links",
+  "release_tag": "v4.00",
+  "published_at": "2026-10-10",
   "minimum_updater_version": "1.0",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.99/A320_Flight_Companion_Setup_3_99.exe"
+  "app": "A320 Flight Companion"
 }
