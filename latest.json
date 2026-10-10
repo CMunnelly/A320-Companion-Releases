@@ -1,10 +1,10 @@
 {
-  "minimum_updater_version": "1.0",
-  "release_tag": "v3.95",
   "channel": "stable",
-  "published_at": "2026-10-10",
+  "minimum_updater_version": "1.0",
+  "notes": "Optional ApronLife automatic launch and simple ground-service controls",
   "app": "A320 Flight Companion",
-  "notes": "All ten custom camera slots with allocation descriptions and configurable shortcuts",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.95/A320_Flight_Companion_Setup_3_95.exe",
-  "version": "3.95"
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.96/A320_Flight_Companion_Setup_3_96.exe",
+  "published_at": "2026-10-10",
+  "release_tag": "v3.96",
+  "version": "3.96"
 }
