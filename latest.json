@@ -1,10 +1,10 @@
 {
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.90/A320_Flight_Companion_Setup_3_90.exe",
-  "notes": "Cockpit and scrollable cabin views; iPad weather pinch zoom and drag",
-  "published_at": "2026-10-10",
-  "app": "A320 Flight Companion",
+  "release_tag": "v3.91",
   "channel": "stable",
   "minimum_updater_version": "1.0",
-  "release_tag": "v3.90",
-  "version": "3.90"
+  "app": "A320 Flight Companion",
+  "notes": "Confirmed 14A/14F cameras, seat selection feedback and exit rows 14/15",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v3.91/A320_Flight_Companion_Setup_3_91.exe",
+  "version": "3.91",
+  "published_at": "2026-10-10"
 }
