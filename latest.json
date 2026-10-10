@@ -1,10 +1,10 @@
 {
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.02/A320_Flight_Companion_Setup_4_02.exe",
+  "release_tag": "v4.03",
+  "published_at": "2026-10-10",
+  "notes": "Unified cabin map and camera controls",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.03/A320_Flight_Companion_Setup_4_03.exe",
+  "minimum_updater_version": "1.0",
   "app": "A320 Flight Companion",
   "channel": "stable",
-  "release_tag": "v4.02",
-  "published_at": "2026-10-10",
-  "version": "4.02",
-  "notes": "Simplified cabin controls with tappable optional help tips",
-  "minimum_updater_version": "1.0"
+  "version": "4.03"
 }
