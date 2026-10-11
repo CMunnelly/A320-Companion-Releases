@@ -1,6 +1,6 @@
 {
-  "version": "1.4.1",
-  "sha256": "7771f76abd20a29da447db5532d169c4533ee08df76082ef07ea3deeba1714cc",
-  "minimum_pc_version": "4.19",
-  "notes": "Selected aircraft highlighting, explicit route banner, departure/destination markers, return to own aircraft."
+  "version": "1.5.0",
+  "sha256": "3d3e5e89ef659046f9220ca59b6e07b1421f32e440c083f3ca336ae524748024",
+  "minimum_pc_version": "4.21",
+  "notes": "Worldwide confirmed SkyNet aircraft, nearby AI and filed flight plan text; map lines remain approximate."
 }
