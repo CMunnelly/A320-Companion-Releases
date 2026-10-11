@@ -1,6 +1,6 @@
 {
-  "version": "1.4.0",
-  "sha256": "c4ae5f24c692f54c7cc949959d8fec6b3f98eab69025fed28efc4dfe11b7e3e9",
+  "version": "1.4.1",
+  "sha256": "7771f76abd20a29da447db5532d169c4533ee08df76082ef07ea3deeba1714cc",
   "minimum_pc_version": "4.19",
-  "notes": "Selected-aircraft routes use PC airport coordinates, with fallback and automatic zoom."
+  "notes": "Selected aircraft highlighting, explicit route banner, departure/destination markers, return to own aircraft."
 }
