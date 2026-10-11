@@ -1706,7 +1706,7 @@ async function skyRoute(r){
    const response=await fetch('/api/skynet-filed-geometry?id='+encodeURIComponent(r.id),{cache:'no-store'});
    if(response.ok){
     const result=await response.json();
-    if(result.ok&&result.quality==='complete'&&Array.isArray(result.geometry)&&result.geometry.length>=3){
+    if(result.ok&&result.quality==='complete'&&Array.isArray(result.unresolved)&&result.unresolved.length===0&&Array.isArray(result.geometry)&&result.geometry.length>=3){
      const geometry=result.geometry.map(p=>skyPosition(p.lat,p.lng));
      if(geometry.every(Boolean))filed=geometry;
     }
@@ -1721,14 +1721,14 @@ async function skyRoute(r){
  SKY_ROUTE.line=new google.maps.Polyline({map:SKY.map,path,strokeColor:filed?'#25bf90':'#53BFFF',
   strokeOpacity:0.92,strokeWeight:3,clickable:false,zIndex:450,
   icons:filed?[]:[{icon:{path:'M 0,-1 0,1',strokeColor:'#E8F8FF',strokeOpacity:.9,scale:2},offset:'0',repeat:'18px'}]});
- banner.querySelector('#skySelectedRouteLabel').textContent=(r.callsign||'Selected aircraft')+' · '+r.origin+' → '+r.destination+(filed?' · validated filed path':' · approximate route');
+ banner.querySelector('#skySelectedRouteLabel').textContent=(r.callsign||'Selected aircraft')+' · '+r.origin+' → '+r.destination+(filed?' · resolved filed route':' · approximate route');
  for(const [index,point] of pts.entries()){
   SKY_ROUTE.labels.push(new google.maps.Marker({map:SKY.map,position:point,
     label:{text:(index===0?'DEP ':'ARR ')+(index===0?r.origin:r.destination),color:'#123b60',fontWeight:'bold',fontSize:'12px'},
     icon:{path:google.maps.SymbolPath.CIRCLE,scale:5,fillColor:index===0?'#32a2ed':'#35bf85',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},
     zIndex:600}));
  }
- skyRouteStatus(filed?'Validated filed route coordinates · display only, not for navigation':'Approximate direct airport route: '+r.origin+' → '+r.destination);
+ skyRouteStatus(filed?'Resolved filed route coordinates · display only, not for navigation':'Approximate direct airport route: '+r.origin+' → '+r.destination);
 }
 function skyOwnCourse(own){const p=skyPosition(own.lat,own.lng),before=SKY_ROUTE.previous;if(!p)return skyNumber(own.heading)||0;
 if(before){const rad=Math.PI/180,dlat=(p.lat-before.lat)*rad,dlon=(p.lng-before.lng)*rad;
@@ -1737,7 +1737,7 @@ if(6371000*2*Math.atan2(Math.sqrt(a),Math.sqrt(Math.max(0,1-a)))>120){
 const y=Math.sin(dlon)*Math.cos(p.lat*rad),x=Math.cos(before.lat*rad)*Math.sin(p.lat*rad)-Math.sin(before.lat*rad)*Math.cos(p.lat*rad)*Math.cos(dlon);
 SKY_ROUTE.course=(Math.atan2(y,x)*180/Math.PI+360)%360;SKY_ROUTE.previous=p;}}else SKY_ROUTE.previous=p;
 return SKY_ROUTE.course??(skyNumber(own.heading)||0);}
-function skyOpen(r,marker){if(!SKY.map)return;skySetFollow(false);const box=document.createElement('div');box.className='sky-info';box.textContent=skyInfoText(r)+'\n'+(r.filed_route?'Filed route: '+r.filed_route.slice(0,400)+'\n':'')+(r.origin&&r.destination?'Map line: approximate airport connection (waypoints not geographically resolved).':'Route unavailable');const routeStatus=document.createElement('div');routeStatus.id='skyRouteStatus';routeStatus.style.cssText='margin-top:7px;color:#17628e;font-weight:700';routeStatus.textContent='Preparing route…';box.append(routeStatus);SKY.info.setContent(box);SKY.info.open({map:SKY.map,anchor:marker});skyRoute(r).catch(()=>skyRouteClear());}
+function skyOpen(r,marker){if(!SKY.map)return;skySetFollow(false);const box=document.createElement('div');box.className='sky-info';box.textContent=skyInfoText(r)+'\n'+(r.filed_route?'Filed route: '+r.filed_route.slice(0,400)+'\n':'')+(r.origin&&r.destination?'Route geometry checked on selection; incomplete data uses an approximate airport connection.':'Route unavailable');const routeStatus=document.createElement('div');routeStatus.id='skyRouteStatus';routeStatus.style.cssText='margin-top:7px;color:#17628e;font-weight:700';routeStatus.textContent='Preparing route…';box.append(routeStatus);SKY.info.setContent(box);SKY.info.open({map:SKY.map,anchor:marker});skyRoute(r).catch(()=>skyRouteClear());}
 function skySetFollow(value){if(value&&SKY_ROUTE.restore){skyRouteClear();SKY_ROUTE.restore=null;skyFitRange();}$('skyFollow').checked=value;if(value&&SKY.data?.own){SKY.map?.setCenter({lat:SKY.data.own.lat,lng:SKY.data.own.lng});}skySave();}
 function skyFitRange(){if(!SKY.map||!SKY.data?.own)return;const c=SKY.data.own;const circle=new google.maps.Circle({center:{lat:c.lat,lng:c.lng},radius:Number($('skyRange').value)*1852});SKY.map.fitBounds(circle.getBounds(),36);circle.setMap(null);}
 function skyPaintOwn(own){if(!SKY.map)return;if(!own){SKY_ROUTE.previous=null;SKY_ROUTE.course=null;SKY.own?.setMap(null);SKY.own=null;SKY.ring?.setMap(null);SKY.ring=null;return;}const p={lat:own.lat,lng:own.lng};if(!SKY.own)SKY.own=new google.maps.Marker({map:SKY.map,zIndex:1000,title:'Your aircraft'});SKY.own.setPosition(p);SKY.own.setIcon(skyIcon('OWN',skyOwnCourse(own)));if(!SKY.ring)SKY.ring=new google.maps.Circle({map:SKY.map,strokeColor:'#71b9ff',strokeOpacity:.8,strokeWeight:1,fillOpacity:0,clickable:false});SKY.ring.setCenter(p);SKY.ring.setRadius(Number($('skyRange').value)*1852);if($('skyFollow').checked)SKY.map.setCenter(p);}
