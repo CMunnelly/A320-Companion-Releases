@@ -1,10 +1,10 @@
 {
-  "app": "A320 Flight Companion",
-  "published_at": "2026-10-11",
-  "version": "4.13",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.13/A320_Flight_Companion_Setup_4_13.exe",
-  "channel": "stable",
-  "release_tag": "v4.13",
   "minimum_updater_version": "1.0",
-  "notes": "All SkyNet pilots with names and optional range filters; shared PC/iPad checklists and live descent path"
+  "notes": "Preserve legacy checklist confirmations during sync and report actual sync errors",
+  "release_tag": "v4.14",
+  "app": "A320 Flight Companion",
+  "channel": "stable",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.14/A320_Flight_Companion_Setup_4_14.exe",
+  "version": "4.14",
+  "published_at": "2026-10-11"
 }
