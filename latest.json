@@ -1,10 +1,10 @@
 {
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.06/A320_Flight_Companion_Setup_4_06.exe",
-  "release_tag": "v4.06",
-  "published_at": "2026-10-11",
-  "notes": "More complete route weather cross-section, cloud layers and data coverage warnings",
+  "channel": "stable",
+  "version": "4.07",
+  "release_tag": "v4.07",
   "app": "A320 Flight Companion",
   "minimum_updater_version": "1.0",
-  "version": "4.06",
-  "channel": "stable"
+  "notes": "Route radar uses matching SimBrief destination when live-flight destination is unavailable",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.07/A320_Flight_Companion_Setup_4_07.exe",
+  "published_at": "2026-10-11"
 }
