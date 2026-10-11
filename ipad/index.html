@@ -1644,21 +1644,27 @@ function skyIcon(source,heading){const own=source==='OWN',ai=source==='AI';retur
 function skyInfoText(r){const alt=skyNumber(r.altitude_ft);return (r.source==='SKYNET'?'SkyNet pilot':r.source==='AI'?'SayIntentions AI':'Your aircraft')+'\n'+(r.pilot_name?r.pilot_name+'\n':'')+(r.callsign||'Aircraft')+' · '+(r.type||'')+'\n'+(r.origin||'—')+' → '+(r.destination||'—')+'\n'+(alt===null?'Altitude unavailable':Math.round(alt).toLocaleString()+' ft')+(r.distance_nm==null?'':' · '+r.distance_nm+' NM')+'\nPosition from latest traffic refresh';}
 const SKY_ROUTE={line:null,seq:0,geo:null,airports:new Map(),previous:null,course:null,restore:null};
 function skyRouteClear(){SKY_ROUTE.seq++;if(SKY_ROUTE.line){SKY_ROUTE.line.setMap(null);SKY_ROUTE.line=null;}}
-function skyAirport(icao){
+async function skyAirport(icao){
  const id=String(icao||'').trim().toUpperCase();
- if(!/^[A-Z]{4}$/.test(id))return Promise.resolve(null);
- if(SKY_ROUTE.airports.has(id))return Promise.resolve(SKY_ROUTE.airports.get(id));
+ if(!/^[A-Z0-9]{4}$/.test(id))return null;
+ if(SKY_ROUTE.airports.has(id))return SKY_ROUTE.airports.get(id);
+ // Use authoritative coordinates from the PC backend first.
+ try{
+  const response=await fetch('/api/airport-coordinates?icao='+encodeURIComponent(id),{cache:'no-store'});
+  if(response.ok){
+   const result=await response.json();
+   const point=skyPosition(result.lat,result.lng);
+   if(result.ok&&point){SKY_ROUTE.airports.set(id,point);return point;}
+  }
+ }catch(e){}
+ // Google geocoding is a fallback, not the primary source.
  if(!SKY_ROUTE.geo)SKY_ROUTE.geo=new google.maps.Geocoder();
- const lookup=(query)=>new Promise(resolve=>SKY_ROUTE.geo.geocode({address:query},(results,status)=>{
-  if(status!=='OK'||!results?.length)return resolve(null);
-  const found=results.find(v=>v.types?.includes('airport'))||results[0];
-  const loc=found?.geometry?.location;
-  resolve(loc?{lat:loc.lat(),lng:loc.lng()}:null);
+ return new Promise(resolve=>SKY_ROUTE.geo.geocode({address:id+' airport'},(results,status)=>{
+  const loc=status==='OK'&&results?.[0]?.geometry?.location;
+  const point=loc?skyPosition(loc.lat(),loc.lng()):null;
+  if(point)SKY_ROUTE.airports.set(id,point);
+  resolve(point);
  }));
- return lookup(id+' international airport').then(p=>p||lookup(id+' airport')).then(p=>{
-  if(p)SKY_ROUTE.airports.set(id,p);
-  return p;
- });
 }
 function skyRouteStatus(text){const el=$('skyRouteStatus');if(el)el.textContent=text;}
 async function skyRoute(r){
