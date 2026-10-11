@@ -1,6 +1,6 @@
 {
-  "version": "1.1.0",
-  "sha256": "861277e670ce1cd693f6038c3ffc87837e4b20459f0c06ba6f2c8536bc7f1c08",
+  "version": "1.2.0",
+  "sha256": "d0b566863d13ffa92fff83d1621affa8d31895b5b2d59d387b2a44ad525ef76e",
   "minimum_pc_version": "4.17",
-  "notes": "Coordinated map: AI aircraft icons, selected-aircraft approximate route, auto-zoom and return-to-own follow."
+  "notes": "Show PC backend version and independently updated iPad interface version in header."
 }
