@@ -1,10 +1,10 @@
 {
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.21/A320_Flight_Companion_Setup_4_21.exe",
-  "version": "4.21",
-  "release_tag": "v4.21",
   "notes": "Worldwide SkyNet feed and filed flight-plan text for iPad",
-  "minimum_updater_version": "1.0",
   "app": "A320 Flight Companion",
-  "channel": "stable",
-  "published_at": "2026-10-11"
+  "release_tag": "v4.21",
+  "published_at": "2026-10-11",
+  "version": "4.21",
+  "minimum_updater_version": "1.0",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.21/A320_Flight_Companion_Setup_4_21.exe",
+  "channel": "stable"
 }
