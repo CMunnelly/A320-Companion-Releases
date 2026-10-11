@@ -1,6 +1,6 @@
 {
-  "version": "1.3.0",
-  "sha256": "2e0aee9d61d92b38a90c4290b2651f0da4022e5b971f7207e66d23abe6cd0f4e",
-  "minimum_pc_version": "4.17",
-  "notes": "Improve selected aircraft route visibility, airport lookup, auto zoom and route status."
+  "version": "1.4.0",
+  "sha256": "c4ae5f24c692f54c7cc949959d8fec6b3f98eab69025fed28efc4dfe11b7e3e9",
+  "minimum_pc_version": "4.19",
+  "notes": "Selected-aircraft routes use PC airport coordinates, with fallback and automatic zoom."
 }
