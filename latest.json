@@ -1,10 +1,10 @@
 {
-  "version": "4.11",
-  "notes": "Correct SkyNet membership, cruise below filed level and dynamic passenger announcements",
-  "release_tag": "v4.11",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.11/A320_Flight_Companion_Setup_4_11.exe",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.12/A320_Flight_Companion_Setup_4_12.exe",
   "channel": "stable",
+  "notes": "Recalculate a descending weather flight-path estimate from live aircraft position",
+  "version": "4.12",
+  "minimum_updater_version": "1.0",
+  "release_tag": "v4.12",
   "published_at": "2026-10-11",
-  "app": "A320 Flight Companion",
-  "minimum_updater_version": "1.0"
+  "app": "A320 Flight Companion"
 }
