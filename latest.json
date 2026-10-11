@@ -1,10 +1,10 @@
 {
+  "notes": "Consistent taxi phase and cruise level, maximise MSFS for views, clearer Fuel Summary page",
+  "published_at": "2026-10-11",
+  "version": "4.08",
+  "release_tag": "v4.08",
   "channel": "stable",
-  "version": "4.07",
-  "release_tag": "v4.07",
-  "app": "A320 Flight Companion",
   "minimum_updater_version": "1.0",
-  "notes": "Route radar uses matching SimBrief destination when live-flight destination is unavailable",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.07/A320_Flight_Companion_Setup_4_07.exe",
-  "published_at": "2026-10-11"
+  "app": "A320 Flight Companion",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.08/A320_Flight_Companion_Setup_4_08.exe"
 }
