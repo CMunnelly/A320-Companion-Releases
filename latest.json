@@ -1,10 +1,10 @@
 {
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.12/A320_Flight_Companion_Setup_4_12.exe",
-  "channel": "stable",
-  "notes": "Recalculate a descending weather flight-path estimate from live aircraft position",
-  "version": "4.12",
-  "minimum_updater_version": "1.0",
-  "release_tag": "v4.12",
+  "app": "A320 Flight Companion",
   "published_at": "2026-10-11",
-  "app": "A320 Flight Companion"
+  "version": "4.13",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.13/A320_Flight_Companion_Setup_4_13.exe",
+  "channel": "stable",
+  "release_tag": "v4.13",
+  "minimum_updater_version": "1.0",
+  "notes": "All SkyNet pilots with names and optional range filters; shared PC/iPad checklists and live descent path"
 }
