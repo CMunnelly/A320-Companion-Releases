@@ -675,7 +675,7 @@ body{overflow:hidden}
   <button class="tab" data-page="checklistsPage"><span class="nav-ico">✓</span>Checklists</button>
 </div>
   <div class="topbar">
-    <div class="brand"><span class="plane">✈</span>A320 FLIGHT COMPANION <span id="appVersion">V4.15</span></div>
+    <div class="brand"><span class="plane">✈</span>A320 FLIGHT COMPANION <span id="appVersion">V4.17</span><span id="ipadInterfaceVersion" style="display:inline-block;margin-left:9px;padding:3px 8px;border-radius:7px;background:#e8f5ff;color:#17628e;font-size:12px;font-weight:800;vertical-align:middle">iPad V1.2.0</span></div>
     <div class="topbar-actions"><button type="button" class="v3wx-refresh" id="checkForUpdatesTop">↻ CHECK UPDATE</button><button type="button" class="v3wx-refresh" id="v3SimbriefRefresh">↻ REFRESH SIMBRIEF</button><div class="conn"><span class="dot" id="dot"></span><span id="connectionText">CONNECTING…</span></div></div>
   </div>
 
@@ -4357,6 +4357,24 @@ $('apronSettingsSave').onclick=async()=>{const b=$('apronSettingsSave');b.disabl
 document.querySelectorAll('[data-apron-action]').forEach(b=>b.onclick=async()=>{if(apronControlBusy)return;apronControlBusy=true;document.querySelectorAll('[data-apron-action]').forEach(x=>x.disabled=true);$('apronMessage').textContent='Sending command…';try{const r=await fetch('/api/apronlife/control',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:b.dataset.apronAction})});const d=await r.json();if(!r.ok||!d.ok)throw Error(d.error||'ApronLife command failed');$('apronMessage').textContent=d.message;}catch(e){$('apronMessage').textContent=e.message;}finally{apronControlBusy=false;await refreshApron();}});
 $('apronRefresh').onclick=refreshApron;loadApronSettings();refreshApron();setInterval(()=>{if($('settingsPage').classList.contains('active'))refreshApron();},5000);
 document.querySelectorAll('[data-page="settingsPage"]').forEach(b=>b.addEventListener('click',loadApronSettings));document.querySelectorAll('[data-page="settingsPage"]').forEach(b=>b.addEventListener('click',refreshApron));
+</script>
+<script>
+(function(){
+ const badge=document.getElementById('ipadInterfaceVersion');
+ if(!badge)return;
+ const update=async()=>{
+  try{
+   const [ui,pc]=await Promise.all([
+    fetch('/api/ipad-ui-version',{cache:'no-store'}).then(r=>r.json()),
+    fetch('/api/ping',{cache:'no-store'}).then(r=>r.json())
+   ]);
+   if(ui.version&&ui.version!=='bundled')badge.textContent='iPad V'+ui.version;
+   const pcLabel=document.getElementById('appVersion');
+   if(pcLabel&&pc.version)pcLabel.textContent='PC V'+pc.version;
+  }catch(e){badge.title='Version status temporarily unavailable';}
+ };
+ update();
+})();
 </script>
 </body>
 </html>
