@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "sha256": "29cc3f333f96c4f44720692a1a17daf2c8e2162c34a3339187f4f2faa4453e03",
+  "version": "1.1.0",
+  "sha256": "861277e670ce1cd693f6038c3ffc87837e4b20459f0c06ba6f2c8536bc7f1c08",
   "minimum_pc_version": "4.17",
-  "notes": "Tap aircraft for approximate direct-airport line, improved AI aircraft silhouette, your aircraft heading derived from movement."
+  "notes": "Coordinated map: AI aircraft icons, selected-aircraft approximate route, auto-zoom and return-to-own follow."
 }
