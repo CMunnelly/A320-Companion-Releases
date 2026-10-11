@@ -1,10 +1,10 @@
 {
-  "notes": "Hide completed checklist warnings on Flight page",
-  "version": "4.09",
-  "release_tag": "v4.09",
-  "channel": "stable",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.10/A320_Flight_Companion_Setup_4_10.exe",
+  "release_tag": "v4.10",
+  "notes": "Clear completed checklist warnings and share stable Flight and Weather phase",
+  "app": "A320 Flight Companion",
   "minimum_updater_version": "1.0",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.09/A320_Flight_Companion_Setup_4_09.exe",
-  "published_at": "2026-10-11",
-  "app": "A320 Flight Companion"
+  "channel": "stable",
+  "version": "4.10",
+  "published_at": "2026-10-11"
 }
