@@ -1,0 +1,6 @@
+{
+  "version": "1.0.0",
+  "sha256": "29cc3f333f96c4f44720692a1a17daf2c8e2162c34a3339187f4f2faa4453e03",
+  "minimum_pc_version": "4.17",
+  "notes": "Tap aircraft for approximate direct-airport line, improved AI aircraft silhouette, your aircraft heading derived from movement."
+}
