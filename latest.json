@@ -1,10 +1,10 @@
 {
-  "minimum_updater_version": "1.0",
-  "app": "A320 Flight Companion",
-  "release_tag": "v4.05",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.06/A320_Flight_Companion_Setup_4_06.exe",
+  "release_tag": "v4.06",
   "published_at": "2026-10-11",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.05/A320_Flight_Companion_Setup_4_05.exe",
-  "notes": "Destination overview label and visible Arrival Gate refresh feedback",
-  "channel": "stable",
-  "version": "4.05"
+  "notes": "More complete route weather cross-section, cloud layers and data coverage warnings",
+  "app": "A320 Flight Companion",
+  "minimum_updater_version": "1.0",
+  "version": "4.06",
+  "channel": "stable"
 }
