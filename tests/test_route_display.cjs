@@ -4,7 +4,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const html = fs.readFileSync(path.join(__dirname, '../ipad/index.html'), 'utf8');
 const source = html.slice(html.indexOf('async function skyRoute(r)'), html.indexOf('function skyOwnCourse'));
-async function render(result, stale=false) {
+async function render(result, stale=false, record={}) {
   const label = {};
   const banner = {style:{}, querySelector:()=>label};
   const state = {seq:0,labels:[],restore:null};
@@ -21,7 +21,7 @@ async function render(result, stale=false) {
       Polyline:class {constructor(options){line=options;}}, Marker:class {},SymbolPath:{CIRCLE:'circle'}}}
   };
   vm.createContext(ctx); vm.runInContext(source, ctx);
-  await ctx.skyRoute({id:'SKYNET:test',source:'SKYNET',callsign:'TEST',origin:'TEST',destination:'DEST',lat:53,lng:4});
+  await ctx.skyRoute({id:'SKYNET:test',source:'SKYNET',callsign:'TEST',origin:'TEST',destination:'DEST',lat:53,lng:4,...record});
   return {line,bounds,label:label.textContent,status};
 }
 (async()=>{
@@ -39,6 +39,13 @@ async function render(result, stale=false) {
     assert.equal(rendered.line.icons.length,1);
     assert.match(rendered.label,/approximate route/);
   }
+  rendered=await render({ok:false},false,{source:'OWN',simbrief_points:geometry});
+  assert.equal(rendered.line.path.length,5);
+  assert.equal(rendered.line.icons.length,1);
+  assert.match(rendered.label,/approximate SimBrief waypoint route/);
+  assert.match(rendered.status,/sampled waypoints/);
+  rendered=await render(good,false,{source:'SKYNET',simbrief_points:geometry});
+  assert.equal(rendered.line.path.length,3); // Never use own SimBrief for another pilot.
   assert.equal((await render(good,true)).line,undefined); // Late results cannot redraw old aircraft.
   console.log('Route display tests passed: resolved path, 5 fallback cases, auto-zoom and stale selection.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

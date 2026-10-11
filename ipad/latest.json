@@ -1,6 +1,6 @@
 {
-  "version": "1.5.0",
-  "sha256": "3d3e5e89ef659046f9220ca59b6e07b1421f32e440c083f3ca336ae524748024",
+  "version": "1.6.0",
+  "sha256": "620e6c5764b419c53317f28af1ccf35c25b259f95edb781d838a67828890b412",
   "minimum_pc_version": "4.21",
-  "notes": "Worldwide confirmed SkyNet aircraft, nearby AI and filed flight plan text; map lines remain approximate."
+  "notes": "Approximate SimBrief waypoint route for your aircraft; other pilots retain resolved or approximate airport routes. Development candidate; live iPad validation pending."
 }

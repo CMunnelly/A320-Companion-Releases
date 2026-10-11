@@ -1684,6 +1684,24 @@ async function skyAirport(icao){
  }));
 }
 function skyRouteStatus(text){const el=$('skyRouteStatus');if(el)el.textContent=text;}
+// The existing PC /api/simbrief snapshot supplies sampled navlog coordinates.
+// This is only the configured pilot's plan, never another SkyNet pilot's route.
+async function skyOwnRoute(){
+ skyRouteClear();const seq=SKY_ROUTE.seq;
+ const own=SKY.data?.own;if(!own)return;
+ skySetFollow(false);set('skyStatus','Loading your SimBrief planned route…');
+ try{
+  const response=await fetch('/api/simbrief',{cache:'no-store'});
+  if(!response.ok)throw Error('SimBrief unavailable');
+  const sb=await response.json();
+  if(seq!==SKY_ROUTE.seq)return;
+  if(!sb.connected||sb.route_match!==true)throw Error('SimBrief plan unavailable or does not match the current flight');
+  if(!/^[A-Z0-9]{4}$/.test(sb.origin||'')||!/^[A-Z0-9]{4}$/.test(sb.destination||''))throw Error('SimBrief route airports unavailable');
+  const fixes=Array.isArray(sb.route_weather)?sb.route_weather:[];
+  const points=fixes.map(f=>skyPosition(f.lat,f.lon)).filter(Boolean);
+  await skyRoute({...own,id:'OWN',source:'OWN',callsign:'Your aircraft',origin:sb.origin,destination:sb.destination,simbrief_points:points});
+ }catch(e){if(seq===SKY_ROUTE.seq)set('skyStatus',e.message+' · refresh SimBrief and try again');}
+}
 async function skyRoute(r){
  skyRouteClear();if(!r||!SKY.map)return;
  SKY_ROUTE.selected=r.id;
@@ -1714,21 +1732,22 @@ async function skyRoute(r){
   }catch(e){}
  }
  if(seq!==SKY_ROUTE.seq)return;
- const path=filed||pts;
+ const approximate=r.source==='OWN'&&Array.isArray(r.simbrief_points)&&r.simbrief_points.length?[pts[0],...r.simbrief_points,pts[1]]:null;
+ const path=approximate||filed||pts;
  const bounds=new google.maps.LatLngBounds();path.forEach(p=>bounds.extend(p));
  const aircraft=skyPosition(r.lat,r.lng);if(aircraft)bounds.extend(aircraft);
  SKY.map.fitBounds(bounds,56);
  SKY_ROUTE.line=new google.maps.Polyline({map:SKY.map,path,strokeColor:filed?'#25bf90':'#53BFFF',
   strokeOpacity:0.92,strokeWeight:3,clickable:false,zIndex:450,
   icons:filed?[]:[{icon:{path:'M 0,-1 0,1',strokeColor:'#E8F8FF',strokeOpacity:.9,scale:2},offset:'0',repeat:'18px'}]});
- banner.querySelector('#skySelectedRouteLabel').textContent=(r.callsign||'Selected aircraft')+' · '+r.origin+' → '+r.destination+(filed?' · resolved filed route':' · approximate route');
+ banner.querySelector('#skySelectedRouteLabel').textContent=(r.callsign||'Selected aircraft')+' · '+r.origin+' → '+r.destination+(approximate?' · approximate SimBrief waypoint route':filed?' · resolved filed route':' · approximate route');
  for(const [index,point] of pts.entries()){
   SKY_ROUTE.labels.push(new google.maps.Marker({map:SKY.map,position:point,
     label:{text:(index===0?'DEP ':'ARR ')+(index===0?r.origin:r.destination),color:'#123b60',fontWeight:'bold',fontSize:'12px'},
     icon:{path:google.maps.SymbolPath.CIRCLE,scale:5,fillColor:index===0?'#32a2ed':'#35bf85',fillOpacity:1,strokeColor:'#fff',strokeWeight:2},
     zIndex:600}));
  }
- skyRouteStatus(filed?'Resolved filed route coordinates · display only, not for navigation':'Approximate direct airport route: '+r.origin+' → '+r.destination);
+ skyRouteStatus(approximate?'Approximate SimBrief route · sampled waypoints; procedures and flown track may differ':filed?'Resolved filed route coordinates · display only, not for navigation':'Approximate direct airport route: '+r.origin+' → '+r.destination);
 }
 function skyOwnCourse(own){const p=skyPosition(own.lat,own.lng),before=SKY_ROUTE.previous;if(!p)return skyNumber(own.heading)||0;
 if(before){const rad=Math.PI/180,dlat=(p.lat-before.lat)*rad,dlon=(p.lng-before.lng)*rad;
@@ -1740,7 +1759,7 @@ return SKY_ROUTE.course??(skyNumber(own.heading)||0);}
 function skyOpen(r,marker){if(!SKY.map)return;skySetFollow(false);const box=document.createElement('div');box.className='sky-info';box.textContent=skyInfoText(r)+'\n'+(r.filed_route?'Filed route: '+r.filed_route.slice(0,400)+'\n':'')+(r.origin&&r.destination?'Route geometry checked on selection; incomplete data uses an approximate airport connection.':'Route unavailable');const routeStatus=document.createElement('div');routeStatus.id='skyRouteStatus';routeStatus.style.cssText='margin-top:7px;color:#17628e;font-weight:700';routeStatus.textContent='Preparing route…';box.append(routeStatus);SKY.info.setContent(box);SKY.info.open({map:SKY.map,anchor:marker});skyRoute(r).catch(()=>skyRouteClear());}
 function skySetFollow(value){if(value&&SKY_ROUTE.restore){skyRouteClear();SKY_ROUTE.restore=null;skyFitRange();}$('skyFollow').checked=value;if(value&&SKY.data?.own){SKY.map?.setCenter({lat:SKY.data.own.lat,lng:SKY.data.own.lng});}skySave();}
 function skyFitRange(){if(!SKY.map||!SKY.data?.own)return;const c=SKY.data.own;const circle=new google.maps.Circle({center:{lat:c.lat,lng:c.lng},radius:Number($('skyRange').value)*1852});SKY.map.fitBounds(circle.getBounds(),36);circle.setMap(null);}
-function skyPaintOwn(own){if(!SKY.map)return;if(!own){SKY_ROUTE.previous=null;SKY_ROUTE.course=null;SKY.own?.setMap(null);SKY.own=null;SKY.ring?.setMap(null);SKY.ring=null;return;}const p={lat:own.lat,lng:own.lng};if(!SKY.own)SKY.own=new google.maps.Marker({map:SKY.map,zIndex:1000,title:'Your aircraft'});SKY.own.setPosition(p);SKY.own.setIcon(skyIcon('OWN',skyOwnCourse(own)));if(!SKY.ring)SKY.ring=new google.maps.Circle({map:SKY.map,strokeColor:'#71b9ff',strokeOpacity:.8,strokeWeight:1,fillOpacity:0,clickable:false});SKY.ring.setCenter(p);SKY.ring.setRadius(Number($('skyRange').value)*1852);if($('skyFollow').checked)SKY.map.setCenter(p);}
+function skyPaintOwn(own){if(!SKY.map)return;if(!own){SKY_ROUTE.previous=null;SKY_ROUTE.course=null;SKY.own?.setMap(null);SKY.own=null;SKY.ring?.setMap(null);SKY.ring=null;return;}const p={lat:own.lat,lng:own.lng};if(!SKY.own){SKY.own=new google.maps.Marker({map:SKY.map,zIndex:1000,title:'Your aircraft · click for approximate SimBrief route'});SKY.own.addListener('click',()=>skyOwnRoute());}SKY.own.setPosition(p);SKY.own.setIcon(skyIcon('OWN',skyOwnCourse(own)));if(!SKY.ring)SKY.ring=new google.maps.Circle({map:SKY.map,strokeColor:'#71b9ff',strokeOpacity:.8,strokeWeight:1,fillOpacity:0,clickable:false});SKY.ring.setCenter(p);SKY.ring.setRadius(Number($('skyRange').value)*1852);if($('skyFollow').checked)SKY.map.setCenter(p);}
 function skyPaintTraffic(){if(!SKY.map)return;const keep=new Set();for(const r of SKY.data?.traffic||[]){const p=skyPosition(r.lat,r.lng);if(!p)continue;keep.add(r.id);let m=SKY.markers.get(r.id);if(!m){m=new google.maps.Marker({map:SKY.map,zIndex:r.source==='SKYNET'?200:100});m.addListener('click',()=>skyOpen(m.record,m));SKY.markers.set(r.id,m);}m.record=r;m.setPosition(p);{const ico=skyIcon(r.source,r.heading);if(SKY_ROUTE.selected===r.id){ico.strokeColor='#ffb21c';ico.strokeWeight=3;ico.scale=(ico.scale||1)*1.35;}m.setIcon(ico);}m.setTitle((r.pilot_name?r.pilot_name+' · ':'')+r.callsign);}for(const [id,m] of SKY.markers){if(!keep.has(id)){m.setMap(null);SKY.markers.delete(id);}}skyRenderList();}
 function skyRenderList(){const host=$('skyList');host.replaceChildren();const q=$('skySearch').value.trim().toLowerCase();const rows=(SKY.data?.traffic||[]).filter(r=>[r.callsign,r.pilot_name,r.origin,r.destination,r.type].join(' ').toLowerCase().includes(q));set('skyListTitle','Worldwide SkyNet + nearby AI · '+rows.length);if(!rows.length){const e=document.createElement('div');e.className='sky-empty';e.textContent=q?'No traffic matches your search.':!SKY.data?.own?'Live MSFS position is needed to find nearby aircraft.':'No aircraft returned by the selected feeds within this range.';host.append(e);return;}for(const r of rows){const e=document.createElement('button');e.type='button';e.className='sky-row';const labels=[[r.callsign,r.pilot_name||r.source],[`${r.origin||'—'} → ${r.destination||'—'}`,r.type||''],[skyNumber(r.altitude_ft)===null?'—':Math.round(r.altitude_ft).toLocaleString()+' ft','Altitude'],[r.distance_nm+' NM',r.source==='SKYNET'?'🔵 SkyNet':'△ AI']];labels.forEach(([main,sub],i)=>{const cell=document.createElement('span');if(i===1)cell.className='sky-route';cell.textContent=main;const small=document.createElement('small');small.textContent=sub;cell.append(small);e.append(cell);});e.onclick=()=>{skySetFollow(false);SKY.map?.panTo({lat:r.lat,lng:r.lng});skyOpen(r,SKY.markers.get(r.id));};host.append(e);}}
 function skyClearWeather(){for(const list of [SKY.cloudShapes,SKY.turbShapes]){list.forEach(s=>s.setMap(null));list.length=0;}if(SKY.map){SKY.map.overlayMapTypes.clear();}SKY.radar=null;SKY.coverage=null;SKY.radarFailed=false;}
@@ -4454,4 +4473,5 @@ document.querySelectorAll('[data-page="settingsPage"]').forEach(b=>b.addEventLis
 </script>
 </body>
 </html>
+
 
