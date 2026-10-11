@@ -1,10 +1,10 @@
 {
-  "notes": "Preserve legacy checklist confirmations during sync and report actual sync errors",
   "channel": "stable",
   "version": "4.15",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.15/A320_Flight_Companion_Setup_4_15.exe",
+  "release_tag": "v4.15",
   "minimum_updater_version": "1.0",
   "published_at": "2026-10-11",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.15/A320_Flight_Companion_Setup_4_15.exe",
-  "app": "A320 Flight Companion",
-  "release_tag": "v4.15"
+  "notes": "Preserve legacy checklist confirmations during sync and report actual sync errors",
+  "app": "A320 Flight Companion"
 }
