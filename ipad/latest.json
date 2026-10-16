@@ -1,6 +1,6 @@
 {
-  "version": "1.6.1",
-  "sha256": "a460247e1eb601a6079a5e1058024919563a8c1f74acbd006fd96409f19fd80b",
-  "minimum_pc_version": "4.21",
-  "notes": "Adds a Fenix TechLog page with embedded tablet view, editable address, Reload and Open separately. TechLog must be running with Tablet Access enabled."
+  "version": "1.6.2",
+  "sha256": "35ab192465d12a32a97d95e218235077a0b57bd0286f08d334cbf2ab71eae41f",
+  "minimum_pc_version": "4.23",
+  "notes": "Arrival Gate aircraft marker follows live simulator heading, including when parked. Faster one-second taxi position refresh."
 }

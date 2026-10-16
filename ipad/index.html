@@ -4424,12 +4424,17 @@ function gateOverview(){
  ARRIVAL.map.fitBounds({south,north,west,east},24);
 }
 function clearArrivalOverlays(){for(const k of ['circle','label','route','aircraft']){ARRIVAL[k]?.setMap(null);ARRIVAL[k]=null;}}
+function gateAircraftIcon(heading){
+ const value=heading==null||heading===''||typeof heading==='boolean'?NaN:Number(heading);
+ if(!Number.isFinite(value))return {path:google.maps.SymbolPath.CIRCLE,scale:7,fillColor:'#1275d0',fillOpacity:1,strokeColor:'#fff',strokeWeight:2};
+ return {path:'M 0 -12 L 2 -7 L 2 -2 L 11 4 L 11 6 L 2 3 L 2 9 L 5 11 L 5 13 L 0 11 L -5 13 L -5 11 L -2 9 L -2 3 L -11 6 L -11 4 L -2 -2 L -2 -7 Z',rotation:(value%360+360)%360,scale:1.2,fillColor:'#1275d0',fillOpacity:1,strokeColor:'#fff',strokeWeight:2};
+}
 function paintArrivalOverlays(){
  const d=ARRIVAL.data,m=ARRIVAL.map;if(!d||!m)return;
  clearArrivalOverlays();const g=window.google.maps;
  if(d.gate_position){ARRIVAL.circle=new g.Circle({map:m,center:d.gate_position,radius:35,strokeColor:'#e22d43',strokeWeight:3,fillColor:'#e22d43',fillOpacity:.07});ARRIVAL.label=new g.Marker({map:m,position:d.gate_position,icon:{path:g.SymbolPath.CIRCLE,scale:0},label:{text:d.arrival_gate+' · Assigned stand',color:'#d02036',fontWeight:'700'},title:'Assigned stand '+d.arrival_gate});}
  if(d.taxi_path?.length>1)ARRIVAL.route=new g.Polyline({map:m,path:d.taxi_path,strokeColor:'#1688ef',strokeOpacity:.95,strokeWeight:5});
- if(d.aircraft)ARRIVAL.aircraft=new g.Marker({map:m,position:d.aircraft,title:'Live aircraft position',label:{text:'✈',color:'#1275d0',fontSize:'26px'},icon:{path:g.SymbolPath.CIRCLE,scale:12,fillColor:'#fff',fillOpacity:1,strokeColor:'#1275d0',strokeWeight:2}});
+ if(d.aircraft)ARRIVAL.aircraft=new g.Marker({map:m,position:d.aircraft,title:'Live aircraft position',icon:gateAircraftIcon(d.aircraft.heading_deg)});
 }
 async function displayArrivalMap(){
  if(!$('gatePage').classList.contains('active'))return;
@@ -4455,7 +4460,7 @@ $('gateRefresh').onclick=async()=>{const b=$('gateRefresh');b.disabled=true;b.te
 $('gateFind').onclick=()=>{if(ARRIVAL.map&&ARRIVAL.data?.gate_position){ARRIVAL.map.setCenter(ARRIVAL.data.gate_position);ARRIVAL.map.setZoom(18);}};
 $('gateAircraft').onclick=()=>{if(ARRIVAL.map&&ARRIVAL.data?.aircraft)ARRIVAL.map.panTo(ARRIVAL.data.aircraft);};
 document.querySelectorAll('[data-page="gatePage"]').forEach(b=>b.addEventListener('click',refreshGate));
-setInterval(()=>{if($('gatePage').classList.contains('active'))refreshGate();},3000);
+setInterval(()=>{if($('gatePage').classList.contains('active'))refreshGate();},1000);
 async function showMapSettings(){try{const d=await loadMapSettings();$('arrivalMapSettingsStatus').textContent=d.configured?'Map key saved. Leave blank to retain it.':'No map key saved.';}catch(e){$('arrivalMapSettingsStatus').textContent=e.message;}}
 $('arrivalMapSave').onclick=async()=>{try{const r=await fetch('/api/arrival-map-settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:$('arrivalMapKey').value,clear:$('arrivalMapClear').checked})});const d=await r.json();if(!r.ok||!d.ok)throw Error(d.error||'Save failed');$('arrivalMapKey').value='';$('arrivalMapClear').checked=false;await showMapSettings();$('arrivalMapSettingsStatus').textContent+=' Saved. '+(d.configured?'If you changed the key, reload this page to apply it.':'Satellite map disabled.');
  if(!d.configured){clearArrivalOverlays();$('arrivalMap').replaceChildren();ARRIVAL.map=null;ARRIVAL.data=null;gateMessage('Add your Google Maps API key in Settings to display satellite imagery.');}else ARRIVAL.loader=null;
