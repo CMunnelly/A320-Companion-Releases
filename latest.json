@@ -1,10 +1,10 @@
 {
-  "notes": "Worldwide SkyNet feed and filed flight-plan text for iPad",
-  "app": "A320 Flight Companion",
-  "release_tag": "v4.21",
-  "published_at": "2026-10-11",
-  "version": "4.21",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.22/A320_Flight_Companion_Setup_4_22.exe",
+  "release_tag": "v4.22",
+  "notes": "Fenix TechLog page and approximate SimBrief route on Windows",
+  "version": "4.22",
+  "published_at": "2026-10-16",
   "minimum_updater_version": "1.0",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.21/A320_Flight_Companion_Setup_4_21.exe",
-  "channel": "stable"
+  "channel": "stable",
+  "app": "A320 Flight Companion"
 }
