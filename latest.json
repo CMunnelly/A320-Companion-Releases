@@ -1,10 +1,10 @@
 {
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.22/A320_Flight_Companion_Setup_4_22.exe",
-  "release_tag": "v4.22",
-  "notes": "Fenix TechLog page and approximate SimBrief route on Windows",
-  "version": "4.22",
-  "published_at": "2026-10-16",
   "minimum_updater_version": "1.0",
+  "version": "4.23",
   "channel": "stable",
-  "app": "A320 Flight Companion"
+  "published_at": "2026-10-16",
+  "notes": "Arrival Gate aircraft heading and faster taxi position updates",
+  "app": "A320 Flight Companion",
+  "release_tag": "v4.23",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.23/A320_Flight_Companion_Setup_4_23.exe"
 }
