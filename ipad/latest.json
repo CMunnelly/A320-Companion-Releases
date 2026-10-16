@@ -1,6 +1,6 @@
 {
-  "version": "1.6.0",
-  "sha256": "620e6c5764b419c53317f28af1ccf35c25b259f95edb781d838a67828890b412",
+  "version": "1.6.1",
+  "sha256": "a460247e1eb601a6079a5e1058024919563a8c1f74acbd006fd96409f19fd80b",
   "minimum_pc_version": "4.21",
-  "notes": "Approximate SimBrief waypoint route for your aircraft with auto-zoom. Other aircraft retain resolved or approximate airport routes. Display only."
+  "notes": "Adds a Fenix TechLog page with embedded tablet view, editable address, Reload and Open separately. TechLog must be running with Tablet Access enabled."
 }

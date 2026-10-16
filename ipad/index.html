@@ -636,6 +636,16 @@ body{overflow:hidden}
 .sky-map-wrap{position:relative;border-radius:14px;overflow:hidden;border:1px solid #d3e0ec;height:clamp(400px,62vh,900px);background:#e6eef6}#skyMap{width:100%;height:100%}#skyMapMessage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:25px;background:#edf3f9;z-index:2}.sky-legend{position:absolute;left:12px;bottom:30px;pointer-events:none;background:rgba(255,255,255,.93);border-radius:9px;padding:10px 13px;line-height:1.8;font-size:11px;color:#25435e;box-shadow:0 2px 12px #0002;max-width:290px}.sky-dot{display:inline-block;width:10px;height:10px;border-radius:50%}.sky-dot.own{background:#efad20}.sky-dot.pilot{background:#2086ed}.sky-dot.ai{background:#8996a4}.sky-rain-scale{display:inline-block;width:60px;height:8px;background:linear-gradient(90deg,#38bd53,#efd737,#e72c28);margin-right:6px}.sky-weather-status{font-size:12px;line-height:1.8;padding:12px 3px;color:#607b92;white-space:pre-line}.sky-list-heading h2{font-size:17px;margin:10px 0}.sky-list-heading input{padding:10px 12px;border:1px solid #d2e1ed;border-radius:8px;width:min(380px,50%)}.sky-list{background:white;border:1px solid #dbe7f2;border-radius:12px;overflow:auto;max-height:340px}.sky-row{width:100%;display:grid;grid-template-columns:1.5fr 1.3fr 1fr .8fr;gap:12px;padding:13px 16px;text-align:left;background:white;border:0;border-bottom:1px solid #e5edf4;color:#284760;cursor:pointer;align-items:center;font-size:13px}.sky-row:hover{background:#f1f7ff}.sky-row small{display:block;font-size:11px;color:#778da1;margin-top:3px}.sky-empty{padding:22px;color:#70869b}.sky-info{color:#233d55;font-size:13px;line-height:1.7;max-width:300px;white-space:pre-line}
 @media(max-width:850px){.sky-shell{padding:14px}.sky-controls{gap:8px 15px;padding:10px}.sky-map-wrap{height:58vh;min-height:390px}.sky-row{grid-template-columns:1.3fr 1fr .8fr}.sky-row .sky-route{display:none}.sky-legend{font-size:10px;max-width:235px}.sky-heading h1{font-size:26px}}
 
+
+/* TechLog uses its existing tablet server on the companion PC. */
+#techlogPage{grid-template-columns:1fr;grid-template-rows:auto auto minmax(360px,1fr);gap:10px;padding:14px;overflow:auto;background:#f3f7fb;color:#183153}
+.techlog-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.techlog-tools h2{margin:0 auto 0 0}.techlog-tools button,.techlog-tools a{padding:9px 12px;border:1px solid #bbcfdf;border-radius:8px;background:#fff;color:#174c77;font:inherit;text-decoration:none;cursor:pointer}
+.techlog-address{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.techlog-address input{flex:1;min-width:220px;padding:9px;border:1px solid #bbcfdf;border-radius:7px;font:inherit}
+#techlogFrame{width:100%;height:100%;min-height:65vh;border:1px solid #bbcbd8;border-radius:10px;background:#15181c}
+#techlogStatus{margin:0;font-size:13px;color:#516c85}
+
 </style>
 <style>
 .cabin-help{min-width:44px;min-height:44px;border:0;background:transparent;color:#2678bd;font-size:22px;cursor:pointer}.cabin-tip{background:#edf6ff;border:1px solid #bdd8ef;border-radius:10px;padding:12px 16px;margin:8px 0;color:#24445f}.cabin-binding-table{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 12px}.cabin-binding-table th,.cabin-binding-table td{text-align:left;padding:8px;border-bottom:1px solid #dce7f0}#cabinCameraSetup>summary{padding:12px 0;font-weight:700;cursor:pointer}#cabinEditActions{display:contents}#cabinEditActions[hidden],.cabin-help[hidden]{display:none!important}
@@ -671,6 +681,7 @@ body{overflow:hidden}
   <button class="tab" data-page="viewsPage"><span class="nav-ico">▣</span>Views</button>
   <button class="tab" data-page="gatePage"><span class="nav-ico">▥</span>Arrival Gate</button>
   <button class="tab" data-page="summaryPage"><span class="nav-ico">▤</span>Fuel Summary</button>
+  <button class="tab" data-page="techlogPage"><span class="nav-ico">▧</span>TechLog</button>
   <button class="tab" data-page="settingsPage"><span class="nav-ico">⚙</span>Settings</button>
   <button class="tab" data-page="checklistsPage"><span class="nav-ico">✓</span>Checklists</button>
 </div>
@@ -851,6 +862,13 @@ body{overflow:hidden}
 </div></section>
 
   <section class="page" id="gatePage" style="grid-template-columns:1fr;overflow:auto"><div class="settings-page" style="max-width:none;width:100%"><div class="settings-title"><h1>Arrival Gate</h1><p id="gateDestination">Destination —</p></div><div class="settings-card"><div class="settings-toolbar"><div><small>ASSIGNED STAND</small><h2 id="gateAssigned">—</h2></div><div><p id="gateStatus">Awaiting destination gate assignment</p><p id="gateRouteStatus"></p></div><button id="gateRefresh" type="button">Refresh</button></div><div class="cabin-tools" style="margin-bottom:12px"><button id="gateOverview" type="button">Destination overview</button><button id="gateFind" type="button" disabled>Find my gate</button><button id="gateAircraft" type="button" disabled>Show aircraft</button></div><div style="position:relative;height:clamp(360px,58vh,800px);border-radius:12px;overflow:hidden;background:#e6eef6"><div id="arrivalMap" style="height:100%;width:100%" aria-label="Arrival airport satellite map"></div><div id="gateMapMessage" role="status" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:#edf3f9;text-align:center">Preparing destination map…</div></div><p class="cabin-note">🔵 Aircraft &nbsp; ━ Taxi route &nbsp; 🔴 Assigned stand · Mouse wheel or pinch to zoom; drag to move.</p><p id="gateRunway"></p><p id="gateNote" class="cabin-note"></p></div></div></section>
+
+  <section class="page" id="techlogPage">
+    <div class="techlog-tools"><h2>Fenix TechLog</h2><button id="techlogReload" type="button">Reload</button><a id="techlogOpen" target="_blank" rel="noopener noreferrer">Open separately ↗</a></div>
+    <div><div class="techlog-address"><label for="techlogAddress">TechLog address</label><input id="techlogAddress" type="url" inputmode="url" spellcheck="false" aria-describedby="techlogStatus"><button id="techlogConnect" type="button">Connect</button><button id="techlogDefault" type="button">Use this PC</button></div><p id="techlogStatus" role="status">Start TechLog on the PC and enable Tablet Access. If the embedded view stays blank, use Open separately.</p></div>
+    <iframe id="techlogFrame" title="Fenix TechLog tablet interface" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
+  </section>
+
   <section class="page" id="settingsPage">
     <div class="settings-page">
       <div class="settings-title"><h1>Settings</h1><p>Configure Flight Companion to match your simulator setup.</p></div>
@@ -4471,7 +4489,42 @@ document.querySelectorAll('[data-page="settingsPage"]').forEach(b=>b.addEventLis
  update();
 })();
 </script>
+
+<script id="techlogIntegration">
+(function techlogInit(){
+ const get=id=>document.getElementById(id),key='a320-techlog-url';
+ const frame=get('techlogFrame'),address=get('techlogAddress'),open=get('techlogOpen'),status=get('techlogStatus');
+ let loaded=false;
+ function defaultURL(){
+  const url=new URL(location.href);url.protocol='http:';url.port='7733';url.pathname='/';url.search='';url.hash='log';return url.href;
+ }
+ function validURL(value){
+  const url=new URL(value);
+  if(!['http:','https:'].includes(url.protocol)||url.username||url.password)throw Error('Enter an http:// or https:// TechLog address without login details.');
+  return url.href;
+ }
+ function configure(value,load,persist){
+  try{
+   const url=validURL(value);
+   address.value=url;open.href=url;
+   if(persist){try{localStorage.setItem(key,url);}catch(e){}}
+   if(load){frame.src=url;loaded=true;status.textContent='TechLog view requested. Keep Tablet Access enabled on the PC. If blank or blocked, use Open separately.';}
+   return true;
+  }catch(e){status.textContent=e.message;return false;}
+ }
+ let saved;try{saved=localStorage.getItem(key);}catch(e){}
+ if(!configure(saved||defaultURL(),false,false))configure(defaultURL(),false,false);
+ document.querySelectorAll('[data-page="techlogPage"]').forEach(button=>button.addEventListener('click',()=>{if(!loaded)configure(address.value,true,false);}));
+ get('techlogConnect').onclick=()=>configure(address.value,true,true);
+ get('techlogReload').onclick=()=>configure(address.value,true,false);
+ get('techlogDefault').onclick=()=>configure(defaultURL(),true,true);
+ address.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();configure(address.value,true,true);}});
+ frame.addEventListener('error',()=>{status.textContent='TechLog could not be displayed here. Check the PC server and Tablet Access, or use Open separately.';});
+})();
+</script>
+
 </body>
 </html>
+
 
 
