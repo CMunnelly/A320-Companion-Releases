@@ -1,6 +1,6 @@
 {
-  "version": "1.6.2",
-  "sha256": "35ab192465d12a32a97d95e218235077a0b57bd0286f08d334cbf2ab71eae41f",
+  "version": "1.6.3",
+  "sha256": "2fecd873bf897162d5a7f7b8cf732922f70237a55fc5d5be8a0dc3ae1d1dd15a",
   "minimum_pc_version": "4.23",
-  "notes": "Arrival Gate aircraft marker follows live simulator heading, including when parked. Faster one-second taxi position refresh."
+  "notes": "UK departure time, live indicative schedule comparison, and ATC Radio page with SayIntentions current/next frequency and handoff history"
 }
