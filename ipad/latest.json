@@ -1,6 +1,6 @@
 {
-  "version": "1.6.8",
-  "sha256": "367d22f422c1f54fd8d9fdadee4521dbe58e82a61a455cc7432246ae3eca73fc",
-  "minimum_pc_version": "4.28",
-  "notes": "Live COM1/COM2 radio panel, standby tuning and transfer; potential frequencies follow flight stage and route position; duplicate Expected order labels removed."
+  "version": "1.6.9",
+  "sha256": "36ade6bfc983aff05ef0f9b2a7264d4edf63ce639db87016b6dcdc374be7e451",
+  "minimum_pc_version": "4.29",
+  "notes": "Compact radio panel; requires PC 4.29 radio event registration fix."
 }
