@@ -1,6 +1,6 @@
 {
-  "version": "1.6.7",
-  "sha256": "13047915ad47daf23d4765a9ec99c54641ead2df5be9efbe99eff28e52068275",
-  "minimum_pc_version": "4.23",
-  "notes": "Fix ATC COM1/COM2 tune buttons for expected frequencies and improve radio page contrast"
+  "version": "1.6.8",
+  "sha256": "367d22f422c1f54fd8d9fdadee4521dbe58e82a61a455cc7432246ae3eca73fc",
+  "minimum_pc_version": "4.28",
+  "notes": "Live COM1/COM2 radio panel, standby tuning and transfer; potential frequencies follow flight stage and route position; duplicate Expected order labels removed."
 }

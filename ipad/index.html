@@ -646,6 +646,8 @@ body{overflow:hidden}
 #techlogFrame{width:100%;height:100%;min-height:65vh;border:1px solid #bbcbd8;border-radius:10px;background:#15181c}
 #techlogStatus{margin:0;font-size:13px;color:#516c85}
 
+.atc-page{padding:22px;width:100%;max-width:1100px;margin:auto}.atc-page h1{margin:0 0 8px}.atc-page h2{margin-top:28px}.atc-radio-panel{margin-top:20px;padding:24px;border:2px solid #7e8c94;border-radius:13px;background:linear-gradient(150deg,#626f77,#364149);box-shadow:inset 0 0 0 4px #2c343b,0 10px 25px #0008}.atc-selectors{display:flex;justify-content:center;gap:50px;margin-bottom:24px}.atc-selectors button{min-width:145px;padding:14px;background:#111a1c;border:3px solid #7b858a;border-radius:12px;color:#f0eee0;font-size:21px;font-weight:700}.atc-selectors small{display:block;font-size:13px;margin-top:4px}.atc-selectors button.selected{border-color:#56ed64;box-shadow:0 0 12px #47f65b66;color:#b6ffb7}.atc-displays{display:grid;grid-template-columns:minmax(0,1fr) 90px minmax(0,1fr);gap:18px;align-items:end;text-align:center}.atc-displays label{display:block;font-size:14px;color:#e0e6e8;font-weight:700;margin-bottom:9px}.atc-displays output{display:block;padding:14px 5px;background:#030705;border:3px solid #1b2529;border-radius:9px;box-shadow:inset 0 0 12px #000;color:#ffbf39;font-family:monospace;font-size:clamp(24px,5vw,58px);font-variant-numeric:tabular-nums;text-shadow:0 0 9px #ffb30066}.atc-displays button{background:#172923;border:3px solid #8f9e9c;border-radius:12px;color:#84ff86;min-height:85px;padding:5px}.atc-displays button span{display:block;font-size:46px;line-height:1}.atc-displays button small{font-size:10px}.atc-displays button:disabled{opacity:.4}.atc-detail{color:var(--muted);font-size:13px;line-height:1.6}.atc-frequency-row{display:flex;justify-content:space-between;align-items:center;gap:14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:15px;margin:8px 0}.atc-tune{border:1px solid #536c85;background:#23384e;color:#e6f2ff;border-radius:8px;min-height:44px;padding:9px 18px;white-space:nowrap;cursor:pointer}.atc-page button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}#atcTuneStatus{min-height:22px;color:var(--amber);font-size:13px}.atc-page details{margin-top:20px}
+@media(max-width:600px){.atc-page{padding:12px}.atc-radio-panel{padding:18px 10px}.atc-selectors{gap:20px}.atc-selectors button{min-width:105px}.atc-displays{gap:6px;grid-template-columns:minmax(0,1fr) 65px minmax(0,1fr)}.atc-displays button{min-height:60px}.atc-displays button span{font-size:34px}.atc-displays button small{font-size:8px}.atc-displays output{font-size:clamp(20px,5.5vw,32px)}.atc-frequency-row{flex-wrap:wrap}.atc-tune{margin-left:auto}}
 </style>
 <style>
 .cabin-help{min-width:44px;min-height:44px;border:0;background:transparent;color:#2678bd;font-size:22px;cursor:pointer}.cabin-tip{background:#edf6ff;border:1px solid #bdd8ef;border-radius:10px;padding:12px 16px;margin:8px 0;color:#24445f}.cabin-binding-table{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 12px}.cabin-binding-table th,.cabin-binding-table td{text-align:left;padding:8px;border-bottom:1px solid #dce7f0}#cabinCameraSetup>summary{padding:12px 0;font-weight:700;cursor:pointer}#cabinEditActions{display:contents}#cabinEditActions[hidden],.cabin-help[hidden]{display:none!important}
@@ -687,7 +689,7 @@ body{overflow:hidden}
   <button class="tab" data-page="checklistsPage"><span class="nav-ico">✓</span>Checklists</button>
 </div>
   <div class="topbar">
-    <div class="brand"><span class="plane">✈</span>A320 FLIGHT COMPANION <span id="appVersion">V4.17</span><span id="ipadInterfaceVersion" style="display:inline-block;margin-left:9px;padding:3px 8px;border-radius:7px;background:#e8f5ff;color:#17628e;font-size:12px;font-weight:800;vertical-align:middle">iPad V1.2.0</span></div>
+    <div class="brand"><span class="plane">✈</span>A320 FLIGHT COMPANION <span id="appVersion">V4.17</span><span id="ipadInterfaceVersion" style="display:inline-block;margin-left:9px;padding:3px 8px;border-radius:7px;background:#e8f5ff;color:#17628e;font-size:12px;font-weight:800;vertical-align:middle">iPad V1.6.8</span></div>
     <div class="topbar-actions"><button type="button" class="v3wx-refresh" id="checkForUpdatesTop">↻ CHECK UPDATE</button><button type="button" class="v3wx-refresh" id="v3SimbriefRefresh">↻ REFRESH SIMBRIEF</button><div class="conn"><span class="dot" id="dot"></span><span id="connectionText">CONNECTING…</span></div></div>
   </div>
 
@@ -789,7 +791,14 @@ body{overflow:hidden}
     </div>
   </section>
 
-  <section class="page" id="radioPage" style="grid-template-columns:1fr;overflow:auto;background:#f3f7fb;color:#17395d"><div style="padding:22px;max-width:1000px;margin:auto;width:100%;color:#17395d"><h1>ATC Radio Plan</h1><p>SimBrief route · live SayIntentions frequencies. Always follow ATC instructions.</p><div style="display:flex;flex-wrap:wrap;gap:12px;margin:18px 0"><div style="flex:1;min-width:180px;border-radius:12px;background:#eaf5ff;padding:16px"><small>ACTIVE COM1</small><div id="atcNow" style="font-size:28px;font-weight:800">---.---</div><div id="atcNowController">Awaiting connection</div></div><div style="flex:1;min-width:180px;border-radius:12px;background:#edf7ef;padding:16px"><small>NEXT / STANDBY</small><div id="atcNext" style="font-size:28px;font-weight:800">---.---</div><div id="atcNextController">Not assigned</div></div></div><div id="atcFlightRoute" style="font-size:16px;font-weight:800;margin-bottom:12px">Loading SimBrief route…</div><h3>Expected order</h3><div id="atcExpected" style="display:grid;gap:8px"></div><h3>SayIntentions expected frequencies</h3><p id="atcPlanStatus" style="font-size:12px">Retrieving available sector information…</p><div id="atcPlannedFrequencies" style="display:grid;gap:7px"></div><div id="atcTuneStatus" role="status" style="font-size:12px;margin-top:10px"></div><h3>Ground Crew / Services</h3><div style="padding:12px;background:#edf5ff;border-radius:9px"><strong>199.990</strong> · Ground crew communications (not ATC Ground)</div><h3>Observed handoffs</h3><p style="font-size:12px">Recorded while this app page is open; future controller frequencies are not guessed.</p><div id="atcHistory" style="display:grid;gap:6px"></div></div></section><section class="page" id="arrivalsPage" style="grid-template-columns:1fr;overflow:auto">
+<section class="page" id="radioPage" style="grid-template-columns:1fr;overflow:auto"><div class="atc-page">
+<h1>ATC / Radios</h1><div id="atcFlightRoute">Loading SimBrief route…</div>
+<div id="atcRadioPanel" class="atc-radio-panel"><div class="atc-selectors"><button id="atcSelect1" class="selected" aria-pressed="true" onclick="atcSelectRadio(1)">COM1<small>VHF1</small></button><button id="atcSelect2" aria-pressed="false" onclick="atcSelectRadio(2)">COM2<small>VHF2</small></button></div>
+<div class="atc-displays"><div><label>ACTIVE</label><output id="atcPanelactive">---.---</output></div><button id="atcTransfer" onclick="atcTransferRadio()" disabled><span>↔</span><small>TRANSFER</small></button><div><label>STANDBY</label><output id="atcPanelstandby">---.---</output></div></div></div>
+<p class="atc-detail">Live MSFS radio readback · select COM1 or COM2, tune standby, then transfer.</p><div id="atcTuneStatus" role="status" aria-live="polite"></div><div id="atcHandoff" class="atc-frequency-row"></div>
+<h2>Frequency plan</h2><p class="atc-detail">Potential frequencies update with your flight stage and route position. Follow the actual ATC handoff.</p><p id="atcPlanStatus" class="atc-detail">Retrieving route frequencies…</p><div id="atcPlannedFrequencies"></div>
+<h3>Ground crew / Services</h3><p class="atc-detail">199.990 · Ground crew communications (not ATC Ground)</p><details><summary>Observed handoffs</summary><div id="atcHistory"></div></details>
+</div></section><section class="page" id="arrivalsPage" style="grid-template-columns:1fr;overflow:auto">
     <div class="sky-shell">
       <div class="sky-heading"><div><small>LIVE TRAFFIC & WEATHER</small><h1>SkyNet</h1><p id="skyStatus" role="status">Select this page to load the moving map.</p></div><button type="button" id="skyRefresh">↻ Refresh</button></div>
       <div class="sky-controls">
@@ -4136,55 +4145,87 @@ function homeAnnouncementText(d){
   return intro+'\n\n'+(d.phase==='TAXI'?'We are taxiing for departure to ':d.phase==='PUSHBACK'?'We are pushing back for our flight to ':'Welcome aboard our flight from '+d.oname+' to ')+d.dname+'.'+(d.flightTime?' Our planned flight time is '+d.flightTime+'.':'')+arrival+'\n\nWe plan to cruise'+(d.cruiseFeet?' at '+Math.round(d.cruiseFeet)+' feet': ' at our filed altitude')+'.'+outlook+destination+'\n\nWe hope you enjoy the flight.';
 }
 
-const ATC_STAGES=['Departure clearance / Delivery','Pushback / Ground','Departure Tower','Departure / Radar','En-route sectors','Arrival / Approach','Arrival Tower','Arrival Ground'];let atcLastHandoff='',atcHistory=[],atcPlanKey='';
+let atcSelectedRadio=1,atcRadios={},atcRadioBusy=false,atcStateLoading=false,atcStateAt=0;
+let atcRows=[],atcData=null,atcRenderKey='',atcFlightAirborne=false;
+function atcSelectRadio(radio){atcSelectedRadio=radio;atcPaintPanel();}
+function atcPaintPanel(){
+ for(const radio of [1,2]){const button=document.getElementById('atcSelect'+radio);if(button){button.classList.toggle('selected',radio===atcSelectedRadio);button.setAttribute('aria-pressed',String(radio===atcSelectedRadio));}}
+ const values=atcRadios[String(atcSelectedRadio)]||{},fresh=Date.now()-atcStateAt<10000;
+ for(const mode of ['active','standby']){const node=document.getElementById('atcPanel'+mode);if(node)node.textContent=fresh&&values[mode]!=null?Number(values[mode]).toFixed(3):'---.---';}
+ const transfer=document.getElementById('atcTransfer');if(transfer){transfer.disabled=atcRadioBusy||!fresh||values.active==null||values.standby==null;transfer.setAttribute('aria-label','Transfer COM'+atcSelectedRadio+' active and standby frequencies');}
+}
+async function atcReadRadios(){
+ if(atcStateLoading)return;atcStateLoading=true;
+ try{const response=await fetch('/api/radio/state',{cache:'no-store'}),data=await response.json();if(!response.ok||!data.ok)throw Error('No live radio data');atcRadios=data.radios||{};atcStateAt=Date.now();}
+ catch(e){atcRadios={};atcStateAt=0;}
+ finally{atcStateLoading=false;atcPaintPanel();}
+}
+async function atcTransferRadio(){
+ if(atcRadioBusy)return;const radio=atcSelectedRadio;atcRadioBusy=true;atcPaintPanel();
+ const status=document.getElementById('atcTuneStatus');status.textContent='Transferring COM'+radio+'…';
+ try{const response=await fetch('/api/radio/transfer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({radio})}),data=await response.json();if(!response.ok||!data.ok)throw Error(data.error||'Transfer failed');status.textContent='COM'+radio+' transfer sent · confirm live displays and cockpit.';setTimeout(atcReadRadios,700);}
+ catch(e){status.textContent='Transfer unavailable: '+e.message;}
+ finally{atcRadioBusy=false;atcPaintPanel();}
+}
 function atcTuneButtons(container,freq){
- const valid=/^1(?:1[89]|2[0-9]|3[0-6])\.\d{2,3}$/.test(String(freq));
- if(!valid)return;
- const buttons=document.createElement('div');buttons.style.cssText='display:flex;flex-wrap:wrap;gap:7px;margin-top:8px';
- for(const radio of [1,2]){
-  const btn=document.createElement('button');btn.type='button';btn.textContent='Tune COM'+radio+' standby';btn.style.cssText='padding:9px 11px;border:1px solid #9aadc1;border-radius:8px;background:#eef6ff;color:#183b5a;cursor:pointer';
-  btn.onclick=()=>atcTuneRadio(radio,freq,false);buttons.appendChild(btn);
- }
- const active=document.createElement('button');active.type='button';active.textContent='Make COM1 active…';active.style.cssText='padding:9px 11px;border:1px solid #a4b6c8;border-radius:8px;background:#fff;color:#183b5a;cursor:pointer';active.onclick=()=>{if(confirm('Replace active COM1 with '+freq+' MHz? Only do this when instructed by ATC.'))atcTuneRadio(1,freq,true);};buttons.appendChild(active);container.appendChild(buttons);
+ if(!/^1(?:1[89]|2[0-9]|3[0-6])\.\d{2,3}$/.test(String(freq)))return;
+ const button=document.createElement('button');button.type='button';button.className='atc-tune';button.textContent='Tune standby';button.onclick=()=>atcTuneRadio(atcSelectedRadio,freq,false);container.appendChild(button);
 }
 async function atcTuneRadio(radio,frequency,active){
- const status=document.getElementById('atcTuneStatus');if(status)status.textContent='Sending '+frequency+' to COM'+radio+' '+(active?'active':'standby')+'…';
- try{const r=await fetch('/api/radio/tune',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({radio,frequency,active})});const d=await r.json();if(!r.ok||!d.ok)throw Error(d.error||'Tune failed');if(status)status.textContent='Command sent: COM'+radio+' '+d.target+' '+d.frequency+' MHz. Confirm frequency in cockpit.';}
- catch(e){if(status)status.textContent='Could not tune radio: '+e.message;}
+ if(atcRadioBusy)return;atcRadioBusy=true;atcPaintPanel();const status=document.getElementById('atcTuneStatus');status.textContent='Sending '+frequency+' to COM'+radio+' standby…';
+ try{const response=await fetch('/api/radio/tune',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({radio,frequency,active})}),data=await response.json();if(!response.ok||!data.ok)throw Error(data.error||'Tune failed');status.textContent='COM'+radio+' standby command sent: '+Number(data.frequency).toFixed(3)+' MHz · confirm cockpit.';setTimeout(atcReadRadios,700);}
+ catch(e){status.textContent='Could not tune radio: '+e.message;}
+ finally{atcRadioBusy=false;atcPaintPanel();}
 }
-function atcRadioRender(sb){const el=id=>document.getElementById(id);if(!el('atcExpected'))return;const route=String(sb.origin||'----')+' → '+String(sb.destination||'----'),key=route+'-'+String(sb.times?.sched_out||'');if(key!==atcPlanKey){atcPlanKey=key;atcHistory=[];atcLastHandoff='';}el('atcFlightRoute').textContent=route+' · SimBrief flight plan';const now=el('currentFreq')?.textContent||'---.---',next=el('nextFreq')?.textContent||'---.---';const ctl=el('currentController')?.textContent||'COM1',nextCtl=el('nextController')?.textContent||'Awaiting handoff';el('atcNow').textContent=now;el('atcNowController').textContent=ctl;el('atcNext').textContent=next;el('atcNextController').textContent=nextCtl;const nextArea=el('atcNextController');if(nextArea)atcTuneButtons(nextArea,next);const out=el('atcExpected');if(!out.childElementCount)ATC_STAGES.forEach((name,i)=>{const box=document.createElement('div');box.style.cssText='padding:12px 14px;border:1px solid #d4e2ec;border-radius:9px;background:white';const h=document.createElement('strong');h.textContent=(i+1)+'. '+name;const info=document.createElement('div');info.style.cssText='font-size:12px;color:#64778b';info.textContent='Frequency awaiting SayIntentions instruction';box.append(h,info);out.appendChild(box);});if(/^1[0-3][0-9]\.[0-9]{2,3}$/.test(next)&&nextCtl!=='--'){const sig=next+'|'+nextCtl;if(sig!==atcLastHandoff){atcLastHandoff=sig;atcHistory.unshift({time:new Date().toLocaleTimeString('en-GB'),freq:next,controller:nextCtl});atcHistory=atcHistory.slice(0,30);}}const history=el('atcHistory');history.replaceChildren();if(!atcHistory.length)history.textContent='No handoffs observed in this session yet.';for(const h of atcHistory){const row=document.createElement('div');row.style.cssText='padding:9px;border-radius:8px;background:#f1f5fa';row.textContent=h.time+' · '+h.controller+' · '+h.freq+' MHz';history.appendChild(row);}}
+let atcLastHandoff='',atcHistory=[],atcPlanKey='';
+function atcUpcomingRows(rows,sim,phase){
+ if(!v3TelemetryLive(sim))return rows;
+ const arrival=['DESCENT','APPROACH','LANDING','AFTER LANDING'].includes(phase);
+ const enroute=['CLIMB','CRUISE'].includes(phase);
+ let result=rows.filter(row=>arrival?row.phase==='arrival'||(phase==='DESCENT'&&row.phase==='enroute'):enroute?row.phase!=='departure':true);
+ // Geography selects the nearest route sample and following samples; never a fabricated handoff.
+ const samples=rows.filter(r=>r.phase==='enroute'&&Number.isFinite(r.lat)&&Number.isFinite(r.lon));
+ if((enroute||phase==='DESCENT')&&samples.length&&Number.isFinite(sim.latitude)&&Number.isFinite(sim.longitude)){
+  let nearest=samples[0],distance=Infinity;
+  for(const row of samples){const d=(row.lat-sim.latitude)**2+((row.lon-sim.longitude)*Math.cos(sim.latitude*Math.PI/180))**2;if(d<distance){nearest=row;distance=d;}}
+  result=result.filter(row=>row.phase!=='enroute'||row.sample_index>=nearest.sample_index);
+ }
+ return result;
+}
+function atcPaintPlan(sim,phase){
+ const target=document.getElementById('atcPlannedFrequencies'),status=document.getElementById('atcPlanStatus');if(!target||!atcData)return;
+ const rows=atcUpcomingRows(atcRows,sim,phase),signature=JSON.stringify([rows,phase,atcData.reason]);if(signature===atcRenderKey)return;atcRenderKey=signature;target.replaceChildren();
+ const seen=new Set();for(const item of rows){const key=[item.phase,item.callsign,item.frequency].join('|');if(seen.has(key))continue;seen.add(key);
+  const row=document.createElement('div');row.className='atc-frequency-row';const text=document.createElement('div'),title=document.createElement('strong'),detail=document.createElement('div');
+  title.textContent=Number(item.frequency).toFixed(3)+' · '+String(item.callsign||item.type||'Controller');detail.className='atc-detail';detail.textContent=String(item.type||'')+(item.fix?' · near '+item.fix:'')+' · Potential, not assigned';text.append(title,detail);row.appendChild(text);atcTuneButtons(row,item.frequency);target.appendChild(row);
+ }
+ if(!seen.size)target.textContent='No potential frequencies available for this stage.';
+ status.textContent='Flight stage: '+(v3TelemetryLive(sim)?phase:'live position unavailable · full route')+' · '+seen.size+' potential frequencies'+(atcData.errors?.length?' · partial coverage':'')+' · refreshed '+new Date(atcPlanFetchedAt).toLocaleTimeString('en-GB');
+}
+function atcRadioRender(sb){
+ const el=id=>document.getElementById(id);if(!el('atcRadioPanel'))return;
+ const route=String(sb.origin||'----')+' → '+String(sb.destination||'----'),key=route+'-'+String(sb.times?.sched_out||'');
+ if(key!==atcPlanKey){atcPlanKey=key;atcHistory=[];atcLastHandoff='';atcRows=[];atcData=null;atcRenderKey='';atcFlightAirborne=false;el('atcPlannedFrequencies').replaceChildren();}
+ el('atcFlightRoute').textContent=route+' · SimBrief flight plan';
+ const next=el('nextFreq')?.textContent||'---.---',controller=el('nextController')?.textContent||'Awaiting handoff';
+ // A standby frequency alone is not an ATC assignment.
+ const assigned=/^1[0-3][0-9]\.\d{2,3}$/.test(next)&&!/(standby|awaiting|^--$)/i.test(controller);
+ const handoff=el('atcHandoff');handoff.replaceChildren();const label=document.createElement('span');label.textContent=assigned?'Reported handoff: '+controller+' · '+next+' MHz':'No confirmed handoff reported';handoff.appendChild(label);if(assigned)atcTuneButtons(handoff,next);
+ if(assigned&&next+'|'+controller!==atcLastHandoff){atcLastHandoff=next+'|'+controller;atcHistory.unshift({time:new Date().toLocaleTimeString('en-GB'),freq:next,controller});atcHistory=atcHistory.slice(0,30);}
+ const history=el('atcHistory');history.replaceChildren();if(!atcHistory.length)history.textContent='No handoffs observed in this session yet.';for(const item of atcHistory){const row=document.createElement('div');row.className='atc-detail';row.textContent=item.time+' · '+item.controller+' · '+item.freq+' MHz';history.appendChild(row);}
+ const sim=latestSimconnect||V3WX?.sim||{};if(v3TelemetryLive(sim)&&Number(sim.on_ground)===0)atcFlightAirborne=true;const phase=atcFlightAirborne&&Number(sim.on_ground)>.5?'AFTER LANDING':homeGState(sim);atcPaintPlan(sim,phase);atcPaintPanel();
+ if(document.getElementById('radioPage')?.classList.contains('active'))atcReadRadios();
+}
 let atcPlanFetchedAt=0,atcPlanLoading=false,atcPlanFlight='';
 async function atcFetchExpected(sb){
  const route=String(sb.origin||'')+'-'+String(sb.destination||'')+'-'+String(sb.times?.sched_out||'');
  if(!sb.origin||!sb.destination||atcPlanLoading||(route===atcPlanFlight&&Date.now()-atcPlanFetchedAt<900000))return;
- atcPlanLoading=true;atcPlanFlight=route;atcPlanFetchedAt=Date.now();
- const status=document.getElementById('atcPlanStatus'),target=document.getElementById('atcPlannedFrequencies');
- if(!status||!target){atcPlanLoading=false;return;}
- status.textContent='Checking SayIntentions route frequencies…';target.replaceChildren();
- try{
- const response=await fetch('/api/atc-frequency-plan',{cache:'no-store'});
- const data=await response.json();if(!response.ok||!data.ok)throw Error(data.reason||'No frequencies returned');
- const rows=Array.isArray(data.rows)?data.rows:[];
- const ordering={CLEARANCE:0,GROUND:1,TOWER:2,DEPARTURE:3,APPROACH:4,CENTER:5,INFORMATION:5,OCEANIC:5,ATIS:8};
- const departures=rows.filter(x=>x.phase==='departure').sort((a,b)=>(ordering[a.type]??6)-(ordering[b.type]??6));
- const arrivals=rows.filter(x=>x.phase==='arrival').sort((a,b)=>(ordering[a.type]??6)-(ordering[b.type]??6));
- const enroute=rows.filter(x=>x.phase==='enroute');
- const sections=[['DEPARTURE',departures],['EN ROUTE · SimBrief waypoint order',enroute],['ARRIVAL',arrivals]];
- for(const [name,items] of sections){
- const heading=document.createElement('strong');heading.textContent=name;target.appendChild(heading);
- if(!items.length){const empty=document.createElement('div');empty.textContent='No verified expected frequencies returned';empty.style.cssText='font-size:12px;color:#6c7d90';target.appendChild(empty);continue;}
- const seen=new Set();
- for(const item of items){const sig=[item.phase,item.type,item.callsign,item.frequency,item.fix].join('|');if(seen.has(sig))continue;seen.add(sig);
- const div=document.createElement('div');div.style.cssText='padding:11px 13px;border:1px solid #d4e2ec;border-radius:9px;background:white';
- const title=document.createElement('strong');title.textContent=String(item.frequency)+' MHz · '+String(item.callsign||item.type||'Controller');
- const sub=document.createElement('div');sub.style.cssText='font-size:12px;color:#64778b';sub.textContent=String(item.type||'')+(item.fix?' · near '+item.fix:'')+(item.min_altitude_ft!=null&&item.max_altitude_ft!=null?' · '+item.min_altitude_ft+'–'+item.max_altitude_ft+' ft':'')+' · Expected, not assigned';
- div.append(title,sub);atcTuneButtons(div,item.frequency);target.appendChild(div);
- }
- }
- status.textContent='SayIntentions expected plan · '+rows.length+' frequency entries · '+(data.sample_count||0)+' route samples'+(data.errors?.length?' · partial coverage':'');
- }catch(e){status.textContent='Expected plan unavailable: '+String(e.message||e)+' · live radio remains active';}
+ atcPlanLoading=true;atcPlanFlight=route;const flightKey=atcPlanKey;const status=document.getElementById('atcPlanStatus');if(status)status.textContent='Retrieving potential route frequencies…';
+ try{const response=await fetch('/api/atc-frequency-plan',{cache:'no-store'}),data=await response.json();if(flightKey!==atcPlanKey)return;if(!response.ok||!data.ok)throw Error(data.reason||'No frequencies returned');atcRows=Array.isArray(data.rows)?data.rows:[];atcData=data;atcPlanFetchedAt=Date.now();atcRenderKey='';const sim=latestSimconnect||V3WX?.sim||{};atcPaintPlan(sim,homeGState(sim));}
+ catch(e){if(flightKey===atcPlanKey){atcRows=[];atcData=null;document.getElementById('atcPlannedFrequencies')?.replaceChildren();if(status)status.textContent='Frequency plan unavailable: '+e.message;atcPlanFetchedAt=Date.now()-840000;}}
  finally{atcPlanLoading=false;}
 }
+
 function renderHomeV328(){
   const fl=latestFlightEnhanced||{}; const fd=fl.flight_details||{},cf=fd.current_flight||{}; const sb=fl.companion_simbrief||V3WX?.simbrief||{}; const sim=latestSimconnect||V3WX?.sim||{};
   const origin=String(sb.origin||cf.flight_origin||cf.flight_plan_origin||fd.flight_origin||'----').toUpperCase();
