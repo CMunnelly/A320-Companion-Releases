@@ -1,10 +1,10 @@
 {
-  "channel": "stable",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.26/A320_Flight_Companion_Setup_4_26.exe",
-  "notes": "V4.26: UK flight times, schedule tracking, SayIntentions ATC planning and radio controls. Test in simulator.",
   "published_at": "2026-10-23",
-  "version": "4.26",
   "app": "A320 Flight Companion",
-  "release_tag": "v4.26",
+  "release_tag": "v4.27",
+  "notes": "V4.27: Updated Flight Companion application with automated tests and installer. Verify simulator-specific functionality before operational use.",
+  "version": "4.27",
+  "channel": "stable",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.27/A320_Flight_Companion_Setup_4_27.exe",
   "minimum_updater_version": "1.0"
 }
