@@ -676,6 +676,7 @@ body{overflow:hidden}
 <div class="side-nav">
   <div class="side-logo"><span class="side-plane">✈</span>A320<br>COMPANION</div>
   <button class="tab active" data-page="flightPage"><span class="nav-ico">⌂</span>Flight</button>
+  <button class="tab" data-page="radioPage"><span class="nav-ico">◉</span>ATC Radio</button>
   <button class="tab" data-page="weatherPage"><span class="nav-ico">☁</span>Weather</button>
   <button class="tab" data-page="arrivalsPage"><span class="nav-ico">▤</span>SkyNet</button>
   <button class="tab" data-page="viewsPage"><span class="nav-ico">▣</span>Views</button>
@@ -715,14 +716,14 @@ body{overflow:hidden}
       </div>
 
       <div class="home-stats">
-        <div class="home-stat"><div class="home-stat-ico">◷</div><div><div class="home-stat-label">Off Blocks (Planned)</div><div class="home-stat-value" id="homeOffBlocks">--:--</div><div class="home-stat-sub" id="homeOffBlocksSub">SimBrief</div></div></div>
+        <div class="home-stat"><div class="home-stat-ico">◷</div><div><div class="home-stat-label">Off Blocks · UTC</div><div class="home-stat-value" id="homeOffBlocks">--:--</div><div class="home-stat-sub" id="homeOffBlocksUK" style="font-weight:800;color:#176ab5">UK time: --:--</div><div class="home-stat-sub" id="homeOffBlocksSub">SimBrief</div></div></div>
         <div class="home-stat"><div class="home-stat-ico">◴</div><div><div class="home-stat-label">Estimated Arrival</div><div class="home-stat-value" id="homeArrival">--:--</div><div class="home-stat-sub">Local time</div></div></div>
         <div class="home-stat"><div class="home-stat-ico">⌛</div><div><div class="home-stat-label">Flight Time</div><div class="home-stat-value" id="homeFlightTime">--:--</div><div class="home-stat-sub">Planned</div></div></div>
         <div class="home-stat"><div class="home-stat-ico">▲</div><div><div class="home-stat-label">Cruise Level</div><div class="home-stat-value" id="homeCruise">--</div><div class="home-stat-sub">SimBrief</div></div></div>
         <div class="home-stat"><div class="home-stat-ico">⌖</div><div><div class="home-stat-label">Distance</div><div class="home-stat-value" id="homeDistance">-- NM</div><div class="home-stat-sub">To destination</div></div></div>
       </div>
 
-      <div class="home-three">
+      <div id="homeScheduleCard" style="margin:0 0 12px;padding:12px 16px;border:1px solid #d5e0eb;border-radius:12px;background:#f3f8fc;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap" role="status"><div><div style="font-size:12px;font-weight:800;color:#425e78">SIMBRIEF SCHEDULE · ESTIMATED ARRIVAL</div><div id="homeScheduleDetail" style="font-size:12px;color:#547089;margin-top:3px">Waiting for flight data</div></div><strong id="homeScheduleDelta" style="font-size:19px;color:#425e78">--</strong></div><div class="home-three">
         <div class="home-card">
           <div class="home-card-head dep"><span>✈ &nbsp; DEPARTURE</span><span class="hcode" id="homeDepCode">----</span></div>
           <div class="home-kv">
@@ -788,7 +789,7 @@ body{overflow:hidden}
     </div>
   </section>
 
-  <section class="page" id="arrivalsPage" style="grid-template-columns:1fr;overflow:auto">
+  <section class="page" id="radioPage" style="grid-template-columns:1fr;overflow:auto"><div style="padding:22px;max-width:1000px;margin:auto;width:100%;color:#17395d"><h1>ATC Radio Plan</h1><p>SimBrief route · live SayIntentions frequencies. Always follow ATC instructions.</p><div style="display:flex;flex-wrap:wrap;gap:12px;margin:18px 0"><div style="flex:1;min-width:180px;border-radius:12px;background:#eaf5ff;padding:16px"><small>ACTIVE COM1</small><div id="atcNow" style="font-size:28px;font-weight:800">---.---</div><div id="atcNowController">Awaiting connection</div></div><div style="flex:1;min-width:180px;border-radius:12px;background:#edf7ef;padding:16px"><small>NEXT / STANDBY</small><div id="atcNext" style="font-size:28px;font-weight:800">---.---</div><div id="atcNextController">Not assigned</div></div></div><div id="atcFlightRoute" style="font-size:16px;font-weight:800;margin-bottom:12px">Loading SimBrief route…</div><h3>Expected order</h3><div id="atcExpected" style="display:grid;gap:8px"></div><h3>Observed handoffs</h3><p style="font-size:12px">Recorded while this app page is open; future controller frequencies are not guessed.</p><div id="atcHistory" style="display:grid;gap:6px"></div></div></section><section class="page" id="arrivalsPage" style="grid-template-columns:1fr;overflow:auto">
     <div class="sky-shell">
       <div class="sky-heading"><div><small>LIVE TRAFFIC & WEATHER</small><h1>SkyNet</h1><p id="skyStatus" role="status">Select this page to load the moving map.</p></div><button type="button" id="skyRefresh">↻ Refresh</button></div>
       <div class="sky-controls">
@@ -4052,6 +4053,7 @@ setInterval(refreshOriginCardV248,5000);
 // ===== V3.28 LIGHT FLIGHT / PASSENGER BRIEFING HOME =====
 const HOME={imgKey:'',gsx:null,lastImageFetch:0};
 function homeText(id,v){const e=document.getElementById(id);if(e)e.textContent=(v===undefined||v===null||v==='')?'--':v}
+function homeFmtZonedClock(v,timeZone){const n=Number(v);if(!Number.isFinite(n)||n<=0)return '--:--';const d=new Date(n>10000000000?n:n*1000);return new Intl.DateTimeFormat('en-GB',{timeZone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(d);}
 function homeFmtClock(v){
   const n=Number(v); if(!Number.isFinite(n)||n<=0)return '--:--';
   const d=new Date(n>10000000000?n:n*1000); if(Number.isNaN(d.getTime()))return '--:--';
@@ -4134,6 +4136,8 @@ function homeAnnouncementText(d){
   return intro+'\n\n'+(d.phase==='TAXI'?'We are taxiing for departure to ':d.phase==='PUSHBACK'?'We are pushing back for our flight to ':'Welcome aboard our flight from '+d.oname+' to ')+d.dname+'.'+(d.flightTime?' Our planned flight time is '+d.flightTime+'.':'')+arrival+'\n\nWe plan to cruise'+(d.cruiseFeet?' at '+Math.round(d.cruiseFeet)+' feet': ' at our filed altitude')+'.'+outlook+destination+'\n\nWe hope you enjoy the flight.';
 }
 
+const ATC_STAGES=['Departure clearance / Delivery','Pushback / Ground','Departure Tower','Departure / Radar','En-route sectors','Arrival / Approach','Arrival Tower','Arrival Ground'];let atcLastHandoff='',atcHistory=[],atcPlanKey='';
+function atcRadioRender(sb){const el=id=>document.getElementById(id);if(!el('atcExpected'))return;const route=String(sb.origin||'----')+' → '+String(sb.destination||'----'),key=route+'-'+String(sb.times?.sched_out||'');if(key!==atcPlanKey){atcPlanKey=key;atcHistory=[];atcLastHandoff='';}el('atcFlightRoute').textContent=route+' · SimBrief flight plan';const now=el('currentFreq')?.textContent||'---.---',next=el('nextFreq')?.textContent||'---.---';const ctl=el('currentController')?.textContent||'COM1',nextCtl=el('nextController')?.textContent||'Awaiting handoff';el('atcNow').textContent=now;el('atcNowController').textContent=ctl;el('atcNext').textContent=next;el('atcNextController').textContent=nextCtl;const out=el('atcExpected');if(!out.childElementCount)ATC_STAGES.forEach((name,i)=>{const box=document.createElement('div');box.style.cssText='padding:12px 14px;border:1px solid #d4e2ec;border-radius:9px;background:white';const h=document.createElement('strong');h.textContent=(i+1)+'. '+name;const info=document.createElement('div');info.style.cssText='font-size:12px;color:#64778b';info.textContent='Frequency awaiting SayIntentions instruction';box.append(h,info);out.appendChild(box);});if(/^1[0-3][0-9]\\.[0-9]{2,3}$/.test(next)&&nextCtl!=='--'){const sig=next+'|'+nextCtl;if(sig!==atcLastHandoff){atcLastHandoff=sig;atcHistory.unshift({time:new Date().toLocaleTimeString('en-GB'),freq:next,controller:nextCtl});atcHistory=atcHistory.slice(0,30);}}const history=el('atcHistory');history.replaceChildren();if(!atcHistory.length)history.textContent='No handoffs observed in this session yet.';for(const h of atcHistory){const row=document.createElement('div');row.style.cssText='padding:9px;border-radius:8px;background:#f1f5fa';row.textContent=h.time+' · '+h.controller+' · '+h.freq+' MHz';history.appendChild(row);}}
 function renderHomeV328(){
   const fl=latestFlightEnhanced||{}; const fd=fl.flight_details||{},cf=fd.current_flight||{}; const sb=fl.companion_simbrief||V3WX?.simbrief||{}; const sim=latestSimconnect||V3WX?.sim||{};
   const origin=String(sb.origin||cf.flight_origin||cf.flight_plan_origin||fd.flight_origin||'----').toUpperCase();
@@ -4142,7 +4146,7 @@ function renderHomeV328(){
   const cs=cleanCallsign(fd.callsign_icao||fd.callsign||cf.callsign_icao||cf.callsign||cf.flight_id||'---'); const ac=fd.aircraft_icao||cf.aircraft_icao||'A320';
   homeText('homeOriginCode',origin);homeText('homeOriginName',oname);homeText('homeDestCode',dest);homeText('homeDestName',dname);homeText('homeCallsign',cs);homeText('homeAircraft',ac);homeText('homeDepCode',origin);homeText('homeDstCode',dest);homeText('homeRouteShort',`${origin} → ${dest}`);
   const plannedDist=Number(sb?.general?.route_distance_nm); const rem=Number(sim?.distance_to_destination_nm); const dist=Number.isFinite(rem)&&rem>0?rem:(Number.isFinite(plannedDist)?plannedDist:null); homeText('homeDistance',dist!=null?`${Math.round(dist)} NM`:'-- NM');homeText('homeHeroDistance',Number.isFinite(plannedDist)?`${Math.round(plannedDist)} NM`:(dist!=null?`${Math.round(dist)} NM`:'-- NM'));
-  const times=sb.times||{}; const ete=Number(times.ete_seconds||times.block_seconds); homeText('homeOffBlocks',homeFmtClock(times.sched_out)); homeText('homeArrival',homeFmtClock(times.sched_in)); homeText('homeFlightTime',homeFmtDuration(ete)); homeText('homeHeroFlightTime',homeFmtDuration(ete)); homeText('homeCruise',sb.cruise_fl?`FL${Math.round(sb.cruise_fl)}`:'--');
+  const times=sb.times||{}; const ete=Number(times.ete_seconds||times.block_seconds); atcRadioRender(sb);homeText('homeOffBlocks',homeFmtZonedClock(times.sched_out,'UTC'));homeText('homeOffBlocksUK','UK time: '+homeFmtZonedClock(times.sched_out,'Europe/London')); homeText('homeArrival',homeFmtClock(times.sched_in)); homeText('homeFlightTime',homeFmtDuration(ete)); homeText('homeHeroFlightTime',homeFmtDuration(ete)); homeText('homeCruise',sb.cruise_fl?`FL${Math.round(sb.cruise_fl)}`:'--');
   if(Number.isFinite(Number(times.sched_out))){const mins=Math.round((Number(times.sched_out)*1000-Date.now())/60000);homeText('homeOffBlocksSub',mins>0?`In ${mins} mins`:'Planned time');}else homeText('homeOffBlocksSub','SimBrief');
   const depRwy=document.getElementById('fOriginRunway')?.textContent||'--'; const depQnh=homeQnh(document.getElementById('fOriginQnh')?.textContent); const depAtisRaw=String((fd.departure_wx||fd.origin_wx||{}).atis || document.getElementById('fOriginAtis')?.textContent || '--'); homeText('homeDepRunway',depRwy);homeText('homeDepSid',document.getElementById('fOriginSid')?.textContent||'--');homeText('homeDepQnh',depQnh);homeText('homeDepWind',document.getElementById('fOriginWind')?.textContent||'--');homeText('homeDepAtis',homeAtisSummary(depAtisRaw,depRwy,depQnh));homeText('homeDepGate',cf.departure_gate||cf.gate||'--');
   homeText('homeCurrentFreq',document.getElementById('currentFreq')?.textContent||'---.---');homeText('homeNextFreq',document.getElementById('nextFreq')?.textContent||'---.---');
@@ -4154,6 +4158,10 @@ function renderHomeV328(){
   const telemetryLive=v3TelemetryLive(sim);
   const remainingMinutes=telemetryLive&&Number.isFinite(rem)&&rem>0&&Number(sim.groundspeed_kt)>60?rem/Number(sim.groundspeed_kt)*60:null;
   const arrival=remainingMinutes!=null?homeFmtClock(Date.now()/1000+remainingMinutes*60):homeFmtClock(times.sched_in);
+  const sched=Number(times.sched_in),schedMs=Number.isFinite(sched)&&sched>0?(sched>10000000000?sched:sched*1000):null;
+  const alive=telemetryLive&&Number(sim.on_ground)===0&&(v3Num(sim.indicated_altitude_ft)||v3Num(sim.altitude_ft)||0)>500;
+  const status=document.getElementById('homeScheduleDelta'),details=document.getElementById('homeScheduleDetail'),card=document.getElementById('homeScheduleCard');
+  if(status&&details&&card){let message='--',detail='Load SimBrief flight plan',color='#425e78',bg='#f3f8fc';if(schedMs){message='Awaiting airborne ETA';detail='Comparison starts airborne with valid distance and groundspeed';if(alive&&remainingMinutes!=null&&Number.isFinite(remainingMinutes)){const delta=Math.round((Date.now()+remainingMinutes*60000-schedMs)/60000);if(Math.abs(delta)<=2){message='On schedule';color='#267447';bg='#eff9f1';}else if(delta<0){message=Math.abs(delta)+' min ahead';color='#267447';bg='#eff9f1';}else{message=delta+' min behind';color='#ad5522';bg='#fff4e9';}detail='Estimated arrival '+homeFmtZonedClock((Date.now()+remainingMinutes*60000)/1000,'Europe/London')+' UK · current groundspeed estimate';}}status.textContent=message;details.textContent=detail;status.style.color=color;card.style.background=bg;}
   const ft=homeFmtDuration(ete);
   homeText('homeAnnouncement',homeAnnouncementText({phase,oname,dname,flightTime:ft==='--:--'?null:ft,arrival:arrival==='--:--'?null:arrival,liveArrival:remainingMinutes!=null,remainingMinutes,cruiseFeet:v3PlannedCruiseFeet(sb),altitudeFt:telemetryLive?(v3Num(sim.indicated_altitude_ft)||v3Num(sim.altitude_ft)):null,destinationWeather:cond&&cond!=='No significant weather'?cond.toLowerCase():atis?'no significant weather reported':null,temp:mp.temp!=='--'?mp.temp.replace('°C',' degrees Celsius'):null,turbulence:worst,weatherAvailable:V3WX.route?.connected&&V3WX.route?.coverage_complete!==false,onGround:telemetryLive&&Number(sim.on_ground)>.5,hasBeenAirborne:checklistHasBeenAirborne,hour:new Date().getHours()}));
   homeLoadAirportImages(origin,oname,dest,dname);
