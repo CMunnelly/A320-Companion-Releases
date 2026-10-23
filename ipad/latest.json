@@ -1,6 +1,6 @@
 {
-  "version": "1.6.3",
-  "sha256": "2fecd873bf897162d5a7f7b8cf732922f70237a55fc5d5be8a0dc3ae1d1dd15a",
+  "version": "1.6.4",
+  "sha256": "087aeb75c1a7c83aa6cf879ed6401a618f8e38308ae7ef3e253adc1d88776d5b",
   "minimum_pc_version": "4.23",
-  "notes": "UK departure time, live indicative schedule comparison, and ATC Radio page with SayIntentions current/next frequency and handoff history"
+  "notes": "ATC Radio expected clearance, ground, tower and route-sector frequencies using SayIntentions developer API where configured; ground crew separate"
 }
