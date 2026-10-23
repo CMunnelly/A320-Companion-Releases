@@ -651,6 +651,8 @@ body{overflow:hidden}
 
 /* Compact radio panel keeps the frequency list in view. */
 .atc-radio-panel{max-width:650px;margin:16px auto 12px;padding:16px 18px}.atc-selectors{gap:28px;margin-bottom:14px}.atc-selectors button{min-width:112px;padding:9px;font-size:17px}.atc-selectors small{font-size:11px}.atc-displays{grid-template-columns:minmax(0,1fr) 68px minmax(0,1fr);gap:10px}.atc-displays output{font-size:clamp(22px,3.4vw,36px);padding:10px 4px}.atc-displays label{font-size:12px;margin-bottom:6px}.atc-displays button{min-height:66px}.atc-displays button span{font-size:34px}@media(max-width:600px){.atc-radio-panel{padding:14px 10px}.atc-displays{gap:6px;grid-template-columns:minmax(0,1fr) 60px minmax(0,1fr)}.atc-displays output{font-size:clamp(20px,5.5vw,30px)}}
+
+.atc-radio-panel{max-width:510px;padding:12px 14px;margin:12px auto}.atc-selectors{gap:22px;margin-bottom:10px}.atc-selectors button{min-width:95px;padding:7px;font-size:15px}.atc-displays output{font-size:28px;padding:8px 3px}.atc-displays button{min-height:56px}.atc-displays button span{font-size:28px}.atc-plan-stage h3{font-size:13px;margin:14px 0 5px;color:var(--amber)}.atc-frequency-row{padding:8px 11px;margin:5px 0;font-size:12px}.atc-frequency-row .atc-detail{font-size:10px}.atc-tune{font-size:11px;padding:6px 12px;min-height:44px}.atc-page h1{font-size:22px}.atc-page h2{font-size:18px;margin-top:18px}#atcPlanStatus{font-size:11px}.ipad-interface-update{padding:7px 10px;min-height:40px;border:1px solid #536c85;border-radius:7px;background:#23384e;color:#e6f2ff;font-size:12px}#ipadUpdateStatus{display:inline-block;font-size:11px;color:var(--muted);margin-left:8px}@media(max-width:600px){.atc-displays output{font-size:clamp(20px,5.5vw,28px)}}
 </style>
 <style>
 .cabin-help{min-width:44px;min-height:44px;border:0;background:transparent;color:#2678bd;font-size:22px;cursor:pointer}.cabin-tip{background:#edf6ff;border:1px solid #bdd8ef;border-radius:10px;padding:12px 16px;margin:8px 0;color:#24445f}.cabin-binding-table{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 12px}.cabin-binding-table th,.cabin-binding-table td{text-align:left;padding:8px;border-bottom:1px solid #dce7f0}#cabinCameraSetup>summary{padding:12px 0;font-weight:700;cursor:pointer}#cabinEditActions{display:contents}#cabinEditActions[hidden],.cabin-help[hidden]{display:none!important}
@@ -692,7 +694,7 @@ body{overflow:hidden}
   <button class="tab" data-page="checklistsPage"><span class="nav-ico">✓</span>Checklists</button>
 </div>
   <div class="topbar">
-    <div class="brand"><span class="plane">✈</span>A320 FLIGHT COMPANION <span id="appVersion">V4.17</span><span id="ipadInterfaceVersion" style="display:inline-block;margin-left:9px;padding:3px 8px;border-radius:7px;background:#e8f5ff;color:#17628e;font-size:12px;font-weight:800;vertical-align:middle">iPad V1.6.9</span></div>
+    <div class="brand"><span class="plane">✈</span>A320 FLIGHT COMPANION <span id="appVersion">V4.17</span><span id="ipadInterfaceVersion" data-version="1.6.10" style="display:inline-block;margin-left:9px;padding:3px 8px;border-radius:7px;background:#e8f5ff;color:#17628e;font-size:12px;font-weight:800;vertical-align:middle">iPad V1.6.10</span> <button id="ipadUpdateButton" class="ipad-interface-update" onclick="ipadUpdateInterface()">Update iPad</button><span id="ipadUpdateStatus" role="status" aria-live="polite"></span></div>
     <div class="topbar-actions"><button type="button" class="v3wx-refresh" id="checkForUpdatesTop">↻ CHECK UPDATE</button><button type="button" class="v3wx-refresh" id="v3SimbriefRefresh">↻ REFRESH SIMBRIEF</button><div class="conn"><span class="dot" id="dot"></span><span id="connectionText">CONNECTING…</span></div></div>
   </div>
 
@@ -4181,29 +4183,55 @@ async function atcTuneRadio(radio,frequency,active){
  finally{atcRadioBusy=false;atcPaintPanel();}
 }
 let atcLastHandoff='',atcHistory=[],atcPlanKey='';
+function atcPlanStage(row,origin,destination){
+ const type=String(row.type||'').toUpperCase(),airport=String(row.airport||'').toUpperCase();
+ const arrival=row.phase==='arrival'||(destination&&airport===destination),departure=row.phase==='departure'||(origin&&airport===origin);
+ if(/ATIS|INFORMATION/.test(type)&&airport)return 8;
+ if(/CLEARANCE|DELIVERY/.test(type))return 0;
+ if(/GROUND/.test(type))return arrival?7:1;
+ if(/TOWER/.test(type))return arrival?6:2;
+ if(/DEPARTURE/.test(type))return 3;
+ if(/APPROACH|RADAR/.test(type)&&departure)return 3;
+ if(/APPROACH/.test(type)||arrival)return 5;
+ return 4;
+}
+function atcCurrentStage(sim,phase){
+ if(!v3TelemetryLive(sim))return -1;
+ if(phase==='AFTER LANDING')return 7;
+ if(['DESCENT','APPROACH','LANDING'].includes(phase))return 5;
+ if(['CRUISE','AIRBORNE'].includes(phase))return 4;
+ if(phase==='CLIMB')return 3;
+ if(phase==='TAKEOFF')return 2;
+ if(['TAXI','PUSHBACK'].includes(phase))return 1;
+ return 0;
+}
 function atcUpcomingRows(rows,sim,phase){
- if(!v3TelemetryLive(sim))return rows;
- const arrival=['DESCENT','APPROACH','LANDING','AFTER LANDING'].includes(phase);
- const enroute=['CLIMB','CRUISE'].includes(phase);
- let result=rows.filter(row=>arrival?row.phase==='arrival'||(phase==='DESCENT'&&row.phase==='enroute'):enroute?row.phase!=='departure':true);
- // Geography selects the nearest route sample and following samples; never a fabricated handoff.
- const samples=rows.filter(r=>r.phase==='enroute'&&Number.isFinite(r.lat)&&Number.isFinite(r.lon));
- if((enroute||phase==='DESCENT')&&samples.length&&Number.isFinite(sim.latitude)&&Number.isFinite(sim.longitude)){
+ const stage=atcCurrentStage(sim,phase),origin=atcData?.origin||'',destination=atcData?.destination||'';
+ let result=rows.filter(row=>stage<0||atcPlanStage(row,origin,destination)>=stage||atcPlanStage(row,origin,destination)===8);
+ const samples=rows.filter(r=>atcPlanStage(r,origin,destination)===4&&Number.isFinite(r.lat)&&Number.isFinite(r.lon));
+ if(stage>=3&&stage<=5&&samples.length&&Number.isFinite(sim.latitude)&&Number.isFinite(sim.longitude)){
   let nearest=samples[0],distance=Infinity;
-  for(const row of samples){const d=(row.lat-sim.latitude)**2+((row.lon-sim.longitude)*Math.cos(sim.latitude*Math.PI/180))**2;if(d<distance){nearest=row;distance=d;}}
-  result=result.filter(row=>row.phase!=='enroute'||row.sample_index>=nearest.sample_index);
+  for(const row of samples){let lon=row.lon-sim.longitude;lon=((lon+540)%360)-180;const d=(row.lat-sim.latitude)**2+(lon*Math.cos(sim.latitude*Math.PI/180))**2;if(d<distance){nearest=row;distance=d;}}
+  result=result.filter(row=>atcPlanStage(row,origin,destination)!==4||row.sample_index>=nearest.sample_index);
  }
- return result;
+ return result.sort((a,b)=>atcPlanStage(a,origin,destination)-atcPlanStage(b,origin,destination)||(a.sample_index??0)-(b.sample_index??0));
 }
 function atcPaintPlan(sim,phase){
  const target=document.getElementById('atcPlannedFrequencies'),status=document.getElementById('atcPlanStatus');if(!target||!atcData)return;
- const rows=atcUpcomingRows(atcRows,sim,phase),signature=JSON.stringify([rows,phase,atcData.reason]);if(signature===atcRenderKey)return;atcRenderKey=signature;target.replaceChildren();
- const seen=new Set();for(const item of rows){const key=[item.phase,item.callsign,item.frequency].join('|');if(seen.has(key))continue;seen.add(key);
-  const row=document.createElement('div');row.className='atc-frequency-row';const text=document.createElement('div'),title=document.createElement('strong'),detail=document.createElement('div');
-  title.textContent=Number(item.frequency).toFixed(3)+' · '+String(item.callsign||item.type||'Controller');detail.className='atc-detail';detail.textContent=String(item.type||'')+(item.fix?' · near '+item.fix:'')+' · Potential, not assigned';text.append(title,detail);row.appendChild(text);atcTuneButtons(row,item.frequency);target.appendChild(row);
- }
- if(!seen.size)target.textContent='No potential frequencies available for this stage.';
- status.textContent='Flight stage: '+(v3TelemetryLive(sim)?phase:'live position unavailable · full route')+' · '+seen.size+' potential frequencies'+(atcData.errors?.length?' · partial coverage':'')+' · refreshed '+new Date(atcPlanFetchedAt).toLocaleTimeString('en-GB');
+ const rows=atcUpcomingRows(atcRows,sim,phase),current=atcCurrentStage(sim,phase),signature=JSON.stringify([rows,current,atcData.reason]);if(signature===atcRenderKey)return;atcRenderKey=signature;target.replaceChildren();
+ const stages=['Clearance / Delivery','Ground / Pushback','Departure tower','Departure / Radar','En-route handovers','Arrival / Approach','Arrival tower','Arrival ground','ATIS'];
+ let count=0;
+ stages.forEach((name,index)=>{
+  if(current>=0&&index<current)return;
+  const items=rows.filter(row=>atcPlanStage(row,atcData.origin,atcData.destination)===index);if(index===8&&!items.length)return;
+  const group=document.createElement('section');group.className='atc-plan-stage';const heading=document.createElement('h3');heading.textContent=name+(index===current?' · Current stage':'');group.appendChild(heading);
+  const seen=new Set();for(const item of items){const key=[item.callsign,item.frequency].join('|');if(seen.has(key))continue;seen.add(key);count++;
+   const row=document.createElement('div');row.className='atc-frequency-row';const text=document.createElement('div'),title=document.createElement('strong'),detail=document.createElement('div');title.textContent=Number(item.frequency).toFixed(3)+' · '+String(item.callsign||item.type||'Controller');detail.className='atc-detail';detail.textContent=(item.fix?'Near '+item.fix+' · ':'')+'Potential, not assigned';text.append(title,detail);row.appendChild(text);atcTuneButtons(row,item.frequency);group.appendChild(row);
+  }
+  if(!seen.size){const empty=document.createElement('p');empty.className='atc-detail';empty.textContent='Frequency not supplied by SayIntentions · await ATC instruction';group.appendChild(empty);}
+  target.appendChild(group);
+ });
+ status.textContent='Flight stage: '+(current<0?'live position unavailable · full route':phase)+' · '+count+' potential frequencies'+(atcData.errors?.length?' · partial coverage':'');
 }
 function atcRadioRender(sb){
  const el=id=>document.getElementById(id);if(!el('atcRadioPanel'))return;
@@ -4585,7 +4613,7 @@ document.querySelectorAll('[data-page="settingsPage"]').forEach(b=>b.addEventLis
     fetch('/api/ipad-ui-version',{cache:'no-store'}).then(r=>r.json()),
     fetch('/api/ping',{cache:'no-store'}).then(r=>r.json())
    ]);
-   if(ui.version&&ui.version!=='bundled')badge.textContent='iPad V'+ui.version;
+   badge.textContent='iPad V'+badge.dataset.version;
    const pcLabel=document.getElementById('appVersion');
    if(pcLabel&&pc.version)pcLabel.textContent='PC V'+pc.version;
   }catch(e){badge.title='Version status temporarily unavailable';}
@@ -4627,6 +4655,34 @@ document.querySelectorAll('[data-page="settingsPage"]').forEach(b=>b.addEventLis
 })();
 </script>
 
+<script>
+async function ipadUpdateInterface(){
+ const button=document.getElementById('ipadUpdateButton'),status=document.getElementById('ipadUpdateStatus');if(button.disabled)return;button.disabled=true;
+ const loaded=document.getElementById('ipadInterfaceVersion')?.dataset.version||'';
+ try{
+  status.textContent='Checking for iPad updates…';
+  const request=async url=>{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);try{const response=await fetch(url,{cache:'no-store',signal:controller.signal});if(!response.ok)throw Error('Update check failed');return await response.json();}finally{clearTimeout(timer);}};
+  const base='https://raw.githubusercontent.com/CMunnelly/A320-Companion-Releases/main/ipad/latest.json?check='+Date.now();
+  const [manifest,pc]=await Promise.all([request(base),request('/api/ping')]);
+  const valid=v=>/^\d+(?:\.\d+){1,2}$/.test(String(v));if(!valid(manifest.version)||!valid(manifest.minimum_pc_version)||!valid(pc.version))throw Error('Invalid version information');
+  const compare=(a,b)=>{const x=a.split('.').map(Number),y=b.split('.').map(Number);for(let i=0;i<Math.max(x.length,y.length);i++)if((x[i]||0)!==(y[i]||0))return (x[i]||0)-(y[i]||0);return 0;};
+  if(compare(pc.version,manifest.minimum_pc_version)<0)throw Error('This release needs PC V'+manifest.minimum_pc_version+'. Your current interface is retained.');
+  if(loaded&&compare(manifest.version,loaded)<=0){status.textContent='iPad V'+loaded+' is up to date.';return;}
+  // The existing PC channel verifies the HTML checksum and retains the offline copy.
+  // Wait out its five-minute check cache entirely from this iPad; no PC installation.
+  for(let attempt=0;attempt<23;attempt++){
+   const ui=await request('/api/ipad-ui-version?check='+Date.now());
+   if(valid(ui.version)&&compare(ui.version,manifest.version)>=0&&!ui.error){status.textContent='Loading iPad V'+ui.version+'…';location.replace('/ipad?version='+encodeURIComponent(ui.version)+'&reload='+Date.now());return;}
+   if(ui.error&&/checksum|newer PC/i.test(ui.error))throw Error(ui.error);
+   status.textContent='iPad V'+manifest.version+' available · waiting for verified download (up to 5 minutes). Keep this page open.';
+   if(attempt<22)await new Promise(resolve=>setTimeout(resolve,15000));
+  }
+  throw Error('Update is not ready yet. Try again shortly; no PC reinstall is needed.');
+ }catch(e){status.textContent='Could not update: '+(e.name==='AbortError'?'Update check timed out. Please try again.':e.message);}
+ finally{button.disabled=false;}
+}
+
+</script>
 </body>
 </html>
 

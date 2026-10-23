@@ -1,6 +1,6 @@
 {
-  "version": "1.6.9",
-  "sha256": "36ade6bfc983aff05ef0f9b2a7264d4edf63ce639db87016b6dcdc374be7e451",
+  "version": "1.6.10",
+  "sha256": "2103acfb8c7e3afed98ee76c9f0797a7c81f45eae154c7224209521be39e8732",
   "minimum_pc_version": "4.29",
-  "notes": "Compact radio panel; requires PC 4.29 radio event registration fix."
+  "notes": "Ordered flight-stage frequency plan, smaller radio and list, and Update iPad button without PC reinstall."
 }
