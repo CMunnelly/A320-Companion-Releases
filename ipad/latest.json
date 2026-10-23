@@ -1,6 +1,6 @@
 {
-  "version": "1.6.4",
-  "sha256": "087aeb75c1a7c83aa6cf879ed6401a618f8e38308ae7ef3e253adc1d88776d5b",
+  "version": "1.6.5",
+  "sha256": "9d181c57554d9ab18edc09bdb6a119738bc09af09a8807e8234fdd4b92c5b75f",
   "minimum_pc_version": "4.23",
-  "notes": "ATC Radio expected clearance, ground, tower and route-sector frequencies using SayIntentions developer API where configured; ground crew separate"
+  "notes": "Add SayIntentions developer key entry in Settings for planned ATC frequencies; requires updated PC backend"
 }
