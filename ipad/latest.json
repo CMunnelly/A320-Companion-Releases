@@ -1,6 +1,6 @@
 {
-  "version": "1.6.6",
-  "sha256": "eeb4b57592e2a54ee9f64dada013b000708a1d6c9f224f81d77c54ab6b4300e4",
+  "version": "1.6.7",
+  "sha256": "13047915ad47daf23d4765a9ec99c54641ead2df5be9efbe99eff28e52068275",
   "minimum_pc_version": "4.23",
-  "notes": "ATC radio planning, secure developer key field and tap-to-tune COM1/COM2 standby and confirmed COM1 active; requires updated PC server"
+  "notes": "Fix ATC COM1/COM2 tune buttons for expected frequencies and improve radio page contrast"
 }
