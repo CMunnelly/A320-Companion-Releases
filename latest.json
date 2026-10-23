@@ -1,10 +1,10 @@
 {
-  "published_at": "2026-10-23",
-  "app": "A320 Flight Companion",
-  "release_tag": "v4.27",
-  "notes": "V4.27: Updated Flight Companion application with automated tests and installer. Verify simulator-specific functionality before operational use.",
-  "version": "4.27",
+  "release_tag": "v4.28",
   "channel": "stable",
-  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.27/A320_Flight_Companion_Setup_4_27.exe",
+  "download_url": "https://github.com/CMunnelly/A320-Companion-Releases/releases/download/v4.28/A320_Flight_Companion_Setup_4_28.exe",
+  "published_at": "2026-10-23",
+  "version": "4.28",
+  "notes": "V4.28: Updated Flight Companion application with automated tests and installer. Verify simulator-specific functionality before operational use.",
+  "app": "A320 Flight Companion",
   "minimum_updater_version": "1.0"
 }
