@@ -1,6 +1,6 @@
 {
-  "version": "1.6.10",
-  "sha256": "2103acfb8c7e3afed98ee76c9f0797a7c81f45eae154c7224209521be39e8732",
-  "minimum_pc_version": "4.29",
-  "notes": "Ordered flight-stage frequency plan, smaller radio and list, and Update iPad button without PC reinstall."
+  "version": "1.6.11",
+  "sha256": "1b984fa31479830df735f60d6c8359b9c2b5c69042f8c4e65b510474a0cb51af",
+  "minimum_pc_version": "4.31",
+  "notes": "Route-based controller journey, 119.990 ramp, airport/service identity fixes, repeat-sector preservation and background forecast progress. Requires PC 4.31."
 }

@@ -694,7 +694,7 @@ body{overflow:hidden}
   <button class="tab" data-page="checklistsPage"><span class="nav-ico">✓</span>Checklists</button>
 </div>
   <div class="topbar">
-    <div class="brand"><span class="plane">✈</span>A320 FLIGHT COMPANION <span id="appVersion">V4.17</span><span id="ipadInterfaceVersion" data-version="1.6.10" style="display:inline-block;margin-left:9px;padding:3px 8px;border-radius:7px;background:#e8f5ff;color:#17628e;font-size:12px;font-weight:800;vertical-align:middle">iPad V1.6.10</span> <button id="ipadUpdateButton" class="ipad-interface-update" onclick="ipadUpdateInterface()">Update iPad</button><span id="ipadUpdateStatus" role="status" aria-live="polite"></span></div>
+    <div class="brand"><span class="plane">✈</span>A320 FLIGHT COMPANION <span id="appVersion">V4.17</span><span id="ipadInterfaceVersion" data-version="1.6.11" style="display:inline-block;margin-left:9px;padding:3px 8px;border-radius:7px;background:#e8f5ff;color:#17628e;font-size:12px;font-weight:800;vertical-align:middle">iPad V1.6.11</span> <button id="ipadUpdateButton" class="ipad-interface-update" onclick="ipadUpdateInterface()">Update iPad</button><span id="ipadUpdateStatus" role="status" aria-live="polite"></span></div>
     <div class="topbar-actions"><button type="button" class="v3wx-refresh" id="checkForUpdatesTop">↻ CHECK UPDATE</button><button type="button" class="v3wx-refresh" id="v3SimbriefRefresh">↻ REFRESH SIMBRIEF</button><div class="conn"><span class="dot" id="dot"></span><span id="connectionText">CONNECTING…</span></div></div>
   </div>
 
@@ -802,7 +802,7 @@ body{overflow:hidden}
 <div class="atc-displays"><div><label>ACTIVE</label><output id="atcPanelactive">---.---</output></div><button id="atcTransfer" onclick="atcTransferRadio()" disabled><span>↔</span><small>TRANSFER</small></button><div><label>STANDBY</label><output id="atcPanelstandby">---.---</output></div></div></div>
 <p class="atc-detail">Live MSFS radio readback · select COM1 or COM2, tune standby, then transfer.</p><div id="atcTuneStatus" role="status" aria-live="polite"></div><div id="atcHandoff" class="atc-frequency-row"></div>
 <h2>Frequency plan</h2><p class="atc-detail">Potential frequencies update with your flight stage and route position. Follow the actual ATC handoff.</p><p id="atcPlanStatus" class="atc-detail">Retrieving route frequencies…</p><div id="atcPlannedFrequencies"></div>
-<h3>Ground crew / Services</h3><p class="atc-detail">199.990 · Ground crew communications (not ATC Ground)</p><details><summary>Observed handoffs</summary><div id="atcHistory"></div></details>
+<h3>Ground crew / Services</h3><p class="atc-detail">119.990 · Ground crew communications (not ATC Ground)</p><details><summary>Observed handoffs</summary><div id="atcHistory"></div></details>
 </div></section><section class="page" id="arrivalsPage" style="grid-template-columns:1fr;overflow:auto">
     <div class="sky-shell">
       <div class="sky-heading"><div><small>LIVE TRAFFIC & WEATHER</small><h1>SkyNet</h1><p id="skyStatus" role="status">Select this page to load the moving map.</p></div><button type="button" id="skyRefresh">↻ Refresh</button></div>
@@ -4184,58 +4184,64 @@ async function atcTuneRadio(radio,frequency,active){
 }
 let atcLastHandoff='',atcHistory=[],atcPlanKey='';
 function atcPlanStage(row,origin,destination){
- const type=String(row.type||'').toUpperCase(),airport=String(row.airport||'').toUpperCase();
- const arrival=row.phase==='arrival'||(destination&&airport===destination),departure=row.phase==='departure'||(origin&&airport===origin);
- if(/ATIS|INFORMATION/.test(type)&&airport)return 8;
- if(/CLEARANCE|DELIVERY/.test(type))return 0;
- if(/GROUND/.test(type))return arrival?7:1;
- if(/TOWER/.test(type))return arrival?6:2;
- if(/DEPARTURE/.test(type))return 3;
- if(/APPROACH|RADAR/.test(type)&&departure)return 3;
- if(/APPROACH/.test(type)||arrival)return 5;
- return 4;
+ if(Number.isInteger(row.stage)&&row.stage>=0&&row.stage<=10)return row.stage;
+ const type=String(row.type||'').toUpperCase(),airport=String(row.airport||'').toUpperCase(),arrival=airport===destination,departure=airport===origin;
+ if(type==='ATIS')return 10;
+ if(type==='RAMP')return arrival?9:departure?0:-1;
+ if(/CLEARANCE|DELIVERY/.test(type))return departure?1:-1;
+ if(type==='GROUND')return arrival?8:departure?2:-1;
+ if(type==='TOWER')return arrival?7:departure?3:-1;
+ if(/APPROACH|DEPARTURE/.test(type)&&departure)return 4;
+ if(/APPROACH|DEPARTURE/.test(type)&&arrival)return 6;
+ return 5;
 }
 function atcCurrentStage(sim,phase){
  if(!v3TelemetryLive(sim))return -1;
- if(phase==='AFTER LANDING')return 7;
- if(['DESCENT','APPROACH','LANDING'].includes(phase))return 5;
- if(['CRUISE','AIRBORNE'].includes(phase))return 4;
- if(phase==='CLIMB')return 3;
- if(phase==='TAKEOFF')return 2;
- if(['TAXI','PUSHBACK'].includes(phase))return 1;
+ const station=typeof document!=='undefined'?document.getElementById('currentController')?.textContent?.trim().toLowerCase():'';
+ const active=typeof document!=='undefined'?Number(document.getElementById('currentFreq')?.textContent):NaN;
+ if(station&&Number.isFinite(active)&&typeof atcRows!=='undefined'){
+  const matches=atcRows.filter(row=>String(row.callsign||'').trim().toLowerCase()===station&&Math.abs(Number(row.frequency)-active)<.0005&&row.stage>0&&row.stage<9);
+  if(matches.length&&matches.every(row=>row.stage===matches[0].stage))return matches[0].stage;
+ }
+ if(phase==='AFTER LANDING')return Number(sim.groundspeed_kt)<1&&Number(sim.parking_brake)>.5?9:8;
+ if(['APPROACH','LANDING'].includes(phase))return 6;
+ if(['CRUISE','AIRBORNE','DESCENT'].includes(phase))return 5;
+ if(phase==='CLIMB')return 4;
+ if(phase==='TAKEOFF')return 3;
+ if(phase==='TAXI')return 2;
+ if(phase==='PUSHBACK')return 0;
  return 0;
 }
+function atcRouteProgress(points,sim){
+ if(!v3TelemetryLive(sim)||!Array.isArray(points)||points.length<2||!Number.isFinite(sim.latitude)||!Number.isFinite(sim.longitude))return null;
+ let best=Infinity,progress=null;const scale=Math.cos(sim.latitude*Math.PI/180),wrap=x=>((x+540)%360)-180;
+ for(let i=1;i<points.length;i++){const a=points[i-1],b=points[i];const x=wrap(a.lon-sim.longitude)*scale,y=a.lat-sim.latitude,dx=wrap(b.lon-a.lon)*scale,dy=b.lat-a.lat,t=Math.max(0,Math.min(1,-(x*dx+y*dy)/(dx*dx+dy*dy||1))),distance=(x+t*dx)**2+(y+t*dy)**2;if(distance<best){best=distance;progress=a.distance_nm+t*(b.distance_nm-a.distance_nm);}}
+ return best>=(100/60)**2?null:progress;
+}
 function atcUpcomingRows(rows,sim,phase){
- const stage=atcCurrentStage(sim,phase),origin=atcData?.origin||'',destination=atcData?.destination||'';
- let result=rows.filter(row=>stage<0||atcPlanStage(row,origin,destination)>=stage||atcPlanStage(row,origin,destination)===8);
- const samples=rows.filter(r=>atcPlanStage(r,origin,destination)===4&&Number.isFinite(r.lat)&&Number.isFinite(r.lon));
- if(stage>=3&&stage<=5&&samples.length&&Number.isFinite(sim.latitude)&&Number.isFinite(sim.longitude)){
-  let nearest=samples[0],distance=Infinity;
-  for(const row of samples){let lon=row.lon-sim.longitude;lon=((lon+540)%360)-180;const d=(row.lat-sim.latitude)**2+(lon*Math.cos(sim.latitude*Math.PI/180))**2;if(d<distance){nearest=row;distance=d;}}
-  result=result.filter(row=>atcPlanStage(row,origin,destination)!==4||row.sample_index>=nearest.sample_index);
- }
- return result.sort((a,b)=>atcPlanStage(a,origin,destination)-atcPlanStage(b,origin,destination)||(a.sample_index??0)-(b.sample_index??0));
+ const stage=atcCurrentStage(sim,phase),origin=atcData?.origin||'',destination=atcData?.destination||'',progress=atcRouteProgress(atcData?.route_points,sim);
+ return rows.filter(row=>{const group=atcPlanStage(row,origin,destination);if(group<0)return false;if(stage>=0&&group<stage)return false;if(group===5&&stage>=4&&stage<=6&&progress!=null&&Number.isFinite(row.end_distance_nm)&&row.end_distance_nm<progress-20)return false;return true;}).sort((a,b)=>atcPlanStage(a,origin,destination)-atcPlanStage(b,origin,destination)||(a.handover_order??a.sample_index??0)-(b.handover_order??b.sample_index??0));
 }
 function atcPaintPlan(sim,phase){
  const target=document.getElementById('atcPlannedFrequencies'),status=document.getElementById('atcPlanStatus');if(!target||!atcData)return;
- const rows=atcUpcomingRows(atcRows,sim,phase),current=atcCurrentStage(sim,phase),signature=JSON.stringify([rows,current,atcData.reason]);if(signature===atcRenderKey)return;atcRenderKey=signature;target.replaceChildren();
- const stages=['Clearance / Delivery','Ground / Pushback','Departure tower','Departure / Radar','En-route handovers','Arrival / Approach','Arrival tower','Arrival ground','ATIS'];
- let count=0;
+ const rows=atcUpcomingRows(atcRows,sim,phase),current=atcCurrentStage(sim,phase),signature=JSON.stringify([rows,current,atcData.loading,atcData.completed_samples,atcData.errors,atcData.reason]);if(signature===atcRenderKey)return;atcRenderKey=signature;target.replaceChildren();
+ const stages=['Origin ramp','Clearance / Delivery','Origin ground','Origin tower','Departure / Radar','En-route controllers','Destination approach','Destination tower','Destination ground','Destination ramp','ATIS'];let count=0;
  stages.forEach((name,index)=>{
   if(current>=0&&index<current)return;
-  const items=rows.filter(row=>atcPlanStage(row,atcData.origin,atcData.destination)===index);if(index===8&&!items.length)return;
-  const group=document.createElement('section');group.className='atc-plan-stage';const heading=document.createElement('h3');heading.textContent=name+(index===current?' · Current stage':'');group.appendChild(heading);
-  const seen=new Set();for(const item of items){const key=[item.callsign,item.frequency].join('|');if(seen.has(key))continue;seen.add(key);count++;
-   const row=document.createElement('div');row.className='atc-frequency-row';const text=document.createElement('div'),title=document.createElement('strong'),detail=document.createElement('div');title.textContent=Number(item.frequency).toFixed(3)+' · '+String(item.callsign||item.type||'Controller');detail.className='atc-detail';detail.textContent=(item.fix?'Near '+item.fix+' · ':'')+'Potential, not assigned';text.append(title,detail);row.appendChild(text);atcTuneButtons(row,item.frequency);group.appendChild(row);
+  const items=rows.filter(row=>atcPlanStage(row,atcData.origin,atcData.destination)===index);if(index===10&&!items.length)return;
+  const group=document.createElement('section');group.className='atc-plan-stage';const heading=document.createElement('h3');heading.textContent=name+(index===current?' · Flight-phase estimate':'');group.appendChild(heading);
+  const seen=new Set();for(const item of items){const key=[item.airport,item.type,item.callsign,item.frequency].join('|');if(index!==5&&seen.has(key))continue;seen.add(key);count++;
+   const row=document.createElement('div');row.className='atc-frequency-row';const text=document.createElement('div'),title=document.createElement('strong'),detail=document.createElement('div');title.textContent=(index===5&&item.handover_order?item.handover_order+'. ':'')+Number(item.frequency).toFixed(3)+' · '+String(item.callsign||item.type||'Controller');detail.className='atc-detail';
+   const parts=[item.airport,item.type,item.facility,item.fix?'Near '+item.fix:''];if(item.min_altitude_ft!=null&&item.max_altitude_ft!=null)parts.push(item.min_altitude_ft+'–'+item.max_altitude_ft+' ft');parts.push(index===0||index===9?'Ground crew channel':index===10?'Information service':'Expected · not an assigned handoff');detail.textContent=parts.filter(Boolean).join(' · ');text.append(title,detail);row.appendChild(text);atcTuneButtons(row,item.frequency);group.appendChild(row);
   }
-  if(!seen.size){const empty=document.createElement('p');empty.className='atc-detail';empty.textContent='Frequency not supplied by SayIntentions · await ATC instruction';group.appendChild(empty);}
+  if(!items.length){const empty=document.createElement('p');empty.className='atc-detail';empty.textContent=atcData.loading?'Checking route and airport data…':index===4||index===6?'No flight-specific handoff confirmed · follow ATC instruction':'No matching frequency in the retrieved data';group.appendChild(empty);}
   target.appendChild(group);
  });
- status.textContent='Flight stage: '+(current<0?'live position unavailable · full route':phase)+' · '+count+' potential frequencies'+(atcData.errors?.length?' · partial coverage':'');
+ status.textContent=String(atcData.origin||'----')+' → '+String(atcData.destination||'----')+' · '+(current<0?'live position unavailable':phase)+' · '+count+' entries'+(atcData.loading?' · building route '+(atcData.completed_samples||0)+'/'+(atcData.sample_count||'?'):' · expected route forecast')+(atcData.errors?.length?' · partial coverage ('+atcData.errors.length+' query errors)':'')+(atcData.resolution_limited?' · reduced sampling resolution':'');
 }
 function atcRadioRender(sb){
  const el=id=>document.getElementById(id);if(!el('atcRadioPanel'))return;
- const route=String(sb.origin||'----')+' → '+String(sb.destination||'----'),key=route+'-'+String(sb.times?.sched_out||'');
+ const route=String(sb.origin||atcData?.origin||'----')+' → '+String(sb.destination||atcData?.destination||'----'),key=String(sb.origin||'')+'-'+String(sb.destination||'')+'-'+String(sb.times?.sched_out||'');
  if(key!==atcPlanKey){atcPlanKey=key;atcHistory=[];atcLastHandoff='';atcRows=[];atcData=null;atcRenderKey='';atcFlightAirborne=false;el('atcPlannedFrequencies').replaceChildren();}
  el('atcFlightRoute').textContent=route+' · SimBrief flight plan';
  const next=el('nextFreq')?.textContent||'---.---',controller=el('nextController')?.textContent||'Awaiting handoff';
@@ -4244,19 +4250,26 @@ function atcRadioRender(sb){
  const handoff=el('atcHandoff');handoff.replaceChildren();const label=document.createElement('span');label.textContent=assigned?'Reported handoff: '+controller+' · '+next+' MHz':'No confirmed handoff reported';handoff.appendChild(label);if(assigned)atcTuneButtons(handoff,next);
  if(assigned&&next+'|'+controller!==atcLastHandoff){atcLastHandoff=next+'|'+controller;atcHistory.unshift({time:new Date().toLocaleTimeString('en-GB'),freq:next,controller});atcHistory=atcHistory.slice(0,30);}
  const history=el('atcHistory');history.replaceChildren();if(!atcHistory.length)history.textContent='No handoffs observed in this session yet.';for(const item of atcHistory){const row=document.createElement('div');row.className='atc-detail';row.textContent=item.time+' · '+item.controller+' · '+item.freq+' MHz';history.appendChild(row);}
- const sim=latestSimconnect||V3WX?.sim||{};if(v3TelemetryLive(sim)&&Number(sim.on_ground)===0)atcFlightAirborne=true;const phase=atcFlightAirborne&&Number(sim.on_ground)>.5?'AFTER LANDING':homeGState(sim);atcPaintPlan(sim,phase);atcPaintPanel();
+ const sim=latestSimconnect||V3WX?.sim||{};if(v3TelemetryLive(sim)&&sim.on_ground!=null&&Number(sim.on_ground)===0)atcFlightAirborne=true;const phase=atcFlightAirborne&&Number(sim.on_ground)>.5?'AFTER LANDING':homeGState(sim);atcPaintPlan(sim,phase);atcPaintPanel();
  if(document.getElementById('radioPage')?.classList.contains('active'))atcReadRadios();
 }
 let atcPlanFetchedAt=0,atcPlanLoading=false,atcPlanFlight='';
 async function atcFetchExpected(sb){
  const route=String(sb.origin||'')+'-'+String(sb.destination||'')+'-'+String(sb.times?.sched_out||'');
- if(!sb.origin||!sb.destination||atcPlanLoading||(route===atcPlanFlight&&Date.now()-atcPlanFetchedAt<900000))return;
- atcPlanLoading=true;atcPlanFlight=route;const flightKey=atcPlanKey;const status=document.getElementById('atcPlanStatus');if(status)status.textContent='Retrieving potential route frequencies…';
- try{const response=await fetch('/api/atc-frequency-plan',{cache:'no-store'}),data=await response.json();if(flightKey!==atcPlanKey)return;if(!response.ok||!data.ok)throw Error(data.reason||'No frequencies returned');atcRows=Array.isArray(data.rows)?data.rows:[];atcData=data;atcPlanFetchedAt=Date.now();atcRenderKey='';const sim=latestSimconnect||V3WX?.sim||{};atcPaintPlan(sim,homeGState(sim));}
- catch(e){if(flightKey===atcPlanKey){atcRows=[];atcData=null;document.getElementById('atcPlannedFrequencies')?.replaceChildren();if(status)status.textContent='Frequency plan unavailable: '+e.message;atcPlanFetchedAt=Date.now()-840000;}}
+ const interval=atcData?.loading?5000:atcData?90000:15000;
+ if(atcPlanLoading||(route===atcPlanFlight&&Date.now()-atcPlanFetchedAt<interval))return;
+ atcPlanLoading=true;atcPlanFlight=route;atcPlanFetchedAt=Date.now();const flightKey=atcPlanKey;
+ const status=document.getElementById('atcPlanStatus');if(status&&!atcData)status.textContent='Retrieving expected route controllers…';
+ try{
+  const response=await fetch('/api/atc-frequency-plan',{cache:'no-store'}),data=await response.json();
+  if(flightKey!==atcPlanKey)return;
+  if(!response.ok||!data.ok)throw Error(data.reason||'Route frequencies unavailable');
+  if((sb.origin&&sb.origin!==data.origin)||(sb.destination&&sb.destination!==data.destination))throw Error('Displayed flight and frequency-plan route differ. Refresh SimBrief.');
+  atcRows=Array.isArray(data.rows)?data.rows:[];atcData=data;atcRenderKey='';
+  const sim=latestSimconnect||V3WX?.sim||{};atcPaintPlan(sim,atcFlightAirborne&&Number(sim.on_ground)>.5?'AFTER LANDING':homeGState(sim));
+ }catch(e){if(flightKey===atcPlanKey){atcRows=[];atcData=null;document.getElementById('atcPlannedFrequencies')?.replaceChildren();if(status)status.textContent='Route forecast unavailable: '+e.message;}}
  finally{atcPlanLoading=false;}
 }
-
 function renderHomeV328(){
   const fl=latestFlightEnhanced||{}; const fd=fl.flight_details||{},cf=fd.current_flight||{}; const sb=fl.companion_simbrief||V3WX?.simbrief||{}; const sim=latestSimconnect||V3WX?.sim||{};
   const origin=String(sb.origin||cf.flight_origin||cf.flight_plan_origin||fd.flight_origin||'----').toUpperCase();
